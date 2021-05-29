@@ -30,6 +30,7 @@ java_name() {
 
   gradle bootJar
 
+  export OTEL_METRICS_EXPORTER="none"
   export SERVICE_NAME="java-name"
 
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
