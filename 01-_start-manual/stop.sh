@@ -3,7 +3,7 @@
 case "$1" in
 
 "go-year" | "go-name" | "java-year" | "java-name")
-  pkill -f $1
+  pkill -f "$1"
   ;;
 
 "")
