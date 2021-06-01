@@ -55,7 +55,11 @@ func main() {
 }
 
 func doSomeWork() {
-	time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
+	tracer := otel.Tracer("")
+	_, span := tracer.Start(context.Background(), "some-work")
+	span.SetAttributes(attribute.String("otel", "rocks"))
+	time.Sleep(time.Duration(500) * time.Millisecond)
+	defer span.End()
 }
 
 func getYear(ctx context.Context) int {
