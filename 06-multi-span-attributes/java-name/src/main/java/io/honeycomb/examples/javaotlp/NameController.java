@@ -80,7 +80,7 @@ public class NameController {
 		}
 	}
 
-	private void addMultiSpanAttribute(String key, String value) {
+	public static void addMultiSpanAttribute(String key, String value) {
 		Span.current().setAttribute(key, value);
 		Baggage.current()
 				.toBuilder()
