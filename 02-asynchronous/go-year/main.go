@@ -35,6 +35,7 @@ func main() {
 		rand.Seed(time.Now().UnixNano())
 		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
 
+		// do something asynchronously
 		go doSomeWork(r.Context())
 
 		year := getYear(r.Context())
