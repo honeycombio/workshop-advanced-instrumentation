@@ -59,7 +59,7 @@ func doSomeWork(ctx context.Context) {
 	span.SetAttributes(attribute.String("otel", "rocks"))
 	time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
 	span.AddEvent("my event", trace.WithAttributes(attribute.String("more", "details")))
-	time.Sleep(time.Duration(rand.Intn(150) + 100) * time.Millisecond)
+	time.Sleep(time.Duration(rand.Intn(150)+100) * time.Millisecond)
 	span.AddEvent("another event")
 
 	go generateLinkedTrace(ctx)
@@ -84,7 +84,6 @@ func getYear(ctx context.Context) int {
 func generateLinkedTrace(ctx context.Context) {
 	tracer := otel.Tracer("")
 	spanContext := trace.SpanContextFromContext(ctx)
-	trace.WithLinks(trace.Link{SpanContext: spanContext})
 
 	ctx, span := tracer.Start(context.Background(), "go-generated-span",
 		trace.WithLinks(trace.Link{SpanContext: spanContext}),
@@ -104,7 +103,7 @@ func addRecursiveSpan(ctx context.Context, depth int, maxDepth int) {
 	defer span.End()
 	time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
 	if depth < maxDepth {
-		addRecursiveSpan(ctx, depth + 1, maxDepth)
+		addRecursiveSpan(ctx, depth+1, maxDepth)
 	}
 }
 
