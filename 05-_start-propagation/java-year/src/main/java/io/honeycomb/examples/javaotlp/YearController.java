@@ -69,14 +69,13 @@ public class YearController {
 	}
 
 	private void generateLinkedTrace() {
-		SpanContext linkedContext = Span.current().getSpanContext();
-
+		SpanContext spanContext = Span.current().getSpanContext();
 
 		Tracer tracer = GlobalOpenTelemetry.getTracer("");
 
 		Span span = tracer.spanBuilder("generated-span")
 				.setNoParent()
-				.addLink(linkedContext)
+				.addLink(spanContext)
 				.setAttribute("depth", 1)
 				.startSpan();
 		span.makeCurrent();
