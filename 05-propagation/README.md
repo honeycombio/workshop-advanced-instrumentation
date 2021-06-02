@@ -23,8 +23,8 @@ additional is required.
 
 ## Go
 
-As of 0.20.0, the Go Gorilla/mux integration does not specify a propagator. Once can be specified with the 
-TraceProvider which will be leveraged by all SDKs. The W3C propagator is specified as a `TextMapPropagator` like this: 
+As of 0.20.0, the Go Gorilla/mux integration does not specify a propagator. One can be specified with the 
+TraceProvider which will be leveraged by all SDKs. The W3C propagator, is specified as a `TextMapPropagator` like this: 
 ```go
 otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{}))
 ```

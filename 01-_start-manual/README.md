@@ -1,6 +1,6 @@
 # Manual Instrumentation - "Starting point"
 
-This is the starting point for all the exercises. It consists of a service that will return a random year between 
+This is the starting point for all the examples. It consists of a service that will return a random year between 
 2015 and 2020. The service is duplicated in Java and Go for this workshop.
 
 When launched either service will listen on port `6001` for the `/year` endpoint.

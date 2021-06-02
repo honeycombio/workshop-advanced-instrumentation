@@ -6,8 +6,9 @@ asynchronous operation added. That operation is also instrumented, but the spans
 ## Java
 
 A new `Runnable` is started. The runnable calls our function which manually creates a span using the global trace provider. 
-We could of also used the `@WithSpan` annotation, but to avoid any ambiguity, the global trace provider was explicitly
-used. Java maintains thread context, but since this span belongs to a new thread, it gets created as part of a new trace.
+We could also use the `@WithSpan` annotation, but to avoid any ambiguity, the global trace provider was explicitly
+used to create the span. Java maintains thread context, but since this span belongs to a new thread, it gets created as 
+part of a new trace.
 
 ## Go
 

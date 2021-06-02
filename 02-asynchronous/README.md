@@ -9,5 +9,6 @@ OpenTelemetry leverages Java thread context, which can be attached to our runnab
 
 ## Go
 
-Since trace context is stored in the Go context, we need to pass this context, and leverage it when creating any new
-span.
+Since trace context is stored in a Go `context.Context`. We need to pass this context, and leverage it when creating any 
+new span. This may require changes to function and method signatures in order to accept a context object. The best practice
+for this in Go, is to pass context as the first parameter.

@@ -1,7 +1,8 @@
 # Propagation - "Starting Point"
 
-To demonstrate propagation another service is added. This new service, called `name` contains a list of names by year. 
-When called it will make a request to the `year` service to determine a year, and return a random name for the given year.
+To demonstrate propagation, a new service is added to the stack. This new service, called `name`, contains a list of 
+names by year. When called it will make a request to the `year` service to get a year, and return a random name from the
+list of names for the given year.
 
 This new service is written only in Go, but can depend on the year service from either Java or Go.
 

@@ -9,7 +9,7 @@ the attributes, and a `SpanProcessor` which converts baggage items to attributes
 are 100% compatible with all OpenTelemetry APIs.
 
 The `name` service for Java has been added, to demonstrate the multi-span attributes functionality. This service will call
-the `year` service from either Java or Go. A url parameter for the service was added to drive the multi-span attribute. 
+the `year` service from either Java or Go. A URL parameter for the service, was added to drive the multi-span attribute. 
 You can control this value by passing a value to the `guess` URL parameter when calling the service.
 ```http request
 http://localhost:6002/name?guess=sophia
@@ -29,4 +29,7 @@ public static void addMultiSpanAttribute(String key, String value) {
             .makeCurrent();
 }
 ```
+
+The [run.sh](run.sh) script supplied with this example has been updated to use the Honeycomb Beestro agent. The Honeycomb
+specific environment variables used to control the agent, are also provided in the script.
 

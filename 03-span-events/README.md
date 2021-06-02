@@ -5,9 +5,10 @@ about errors, and more. Adding Span Events are part of the OpenTelemetry API and
 
 ## Java
 
-The `span.addEvent()` method is overloaded to add events by just name, or to add one with 1 or more attributes.
+The `span.addEvent(name)` can be used to add a simple event with just a name. The method is overloaded with 
+`span.addEvent(name, attributes)` to add an event with 1 or more attributes.
 
 ## Go
 
-The `span.AddEvent()` is a variadic function which can receive a set of optional EventOption. You can use  
-`trace.WithAttributes(...)` as an EventOption to set attributes on a span event.
+The `span.AddEvent(name, options)` is a variadic function which can receive a set of optional EventOption parameters. 
+You can use `trace.WithAttributes(...)` as an EventOption to set attributes on a span event.
