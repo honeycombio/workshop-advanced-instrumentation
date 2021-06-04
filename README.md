@@ -21,9 +21,10 @@ cd workshop
 ```
 
 2. Set up your local environment with your Honeycomb API Key and Dataset name. You will need a Honeycomb Team in order to
-get your API key.  For Dataset name, we recommend `greeting` but you can make this whatever you like.
+get your API key.  For Dataset name, we recommend `workshop` but you can make this whatever you like.
+The `-w` option will write the environment variables to your shell profile.  
 ```shell
-source setup-env.sh YOUR_API_KEY greeting -w
+source setup-env.sh YOUR_API_KEY workshop -w
 ```
 
 Each example is stored in its own folder, with some examples (1, 2, 5) having an additional starting point.
