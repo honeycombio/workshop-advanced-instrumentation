@@ -22,8 +22,25 @@ export HONEYCOMB_DATASET="$2"
 
 if [[ -n "$3" ]] && [[ "$3" == "-w" ]]; then
   echo "persisting to user profile"
+
+  case $SHELL in
+*/zsh)
+  cat >> ~/.zshrc <<EOL
+export HONEYCOMB_API_KEY="$1"
+export HONEYCOMB_DATASET="$2"
+EOL
+   ;;
+*/bash)
+  cat >> ~/.bashrc <<EOL
+export HONEYCOMB_API_KEY="$1"
+export HONEYCOMB_DATASET="$2"
+EOL
+   ;;
+*)
   cat >> ~/.profile <<EOL
 export HONEYCOMB_API_KEY="$1"
 export HONEYCOMB_DATASET="$2"
 EOL
+esac
+
 fi
