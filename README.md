@@ -28,7 +28,8 @@ cd workshop
 source setup-env.sh YOUR_API_KEY workshop -w
 ```
 
-Each example is stored in its own folder, with some examples (1, 2, 5) having an additional starting point.
+Each example is stored in its own numbered folder, and builds from the prior example. Some examples (1, 2, 5) have an additional
+starting point because something new was added which is outside the scope of this workshop (ie: adding multi-thread logic).
 
 ### Running and stopping services
 Within each example folder is a `run.sh` and `stop.sh` file. These are used to build and run as well as stop any of the 
@@ -39,10 +40,10 @@ The syntax for the run script is:
 run.sh <service-name> [-b]
 ```
 Where the optional `-b` argument will start the service in the background. Valid service names will depend on the 
-example and are limited to: `go-name`, `go-year`, `java-name`, and `java-year` 
+example and are limited to: `go-name`, `go-year`, `java-name`, and `java-year`. 
 
 The syntax for the stop script is:
 ```shell
 stop.sh [service-name]
 ```
-The `service-name` is optional and if not specific all services we be stopped.
+`service-name` is optional and if not specific all services we be stopped.
