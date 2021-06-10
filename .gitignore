@@ -16,3 +16,6 @@ gradle-wrapper.jar
 
 # IntelliJ Module files
 *.iml
+
+**/bin/
+
