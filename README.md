@@ -18,8 +18,8 @@ The syntax for the run script is:
 ```shell
 run.sh <service-name> [-b]
 ```
-Where the optional `-b` argument will start the service in the background. Valid service names will depend on the
-example and are limited to: `go-name`, `go-year`, `java-name`, and `java-year`.
+Where the optional `-b` argument will start the service in the background. 
+Valid service names will depend on the example and are limited to: `go-name`, `go-year`, `java-name`, `java-year`, `node-name`, and `node-year`.
 
 The syntax for the stop script is:
 ```shell
