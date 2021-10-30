@@ -30,6 +30,18 @@ java_year() {
   fi
 }
 
+node_year() {
+  cd node-year || exit
+
+  npm install
+
+  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
+    node -r ./tracing.js node-year.js &
+  else
+    node -r ./tracing.js  node-year.js
+  fi
+}
+
 case $1 in
 
 "go-year")
@@ -42,6 +54,10 @@ case $1 in
   java_year "$@"
   ;;
 
+"node-year")
+  echo "node-year"
+  node_year "$@"
+  ;;
 *)
   echo "bad option"
   ;;

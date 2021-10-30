@@ -24,6 +24,17 @@ java_year() {
     java -jar build/libs/java-year.jar
   fi
 }
+node_year() {
+  cd node-year || exit
+
+  npm install
+
+  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
+    node node-year.js &
+  else
+    node node-year.js
+  fi
+}
 
 case $1 in
 
@@ -37,6 +48,10 @@ case $1 in
   java_year "$@"
   ;;
 
+"node-year")
+  echo "node-year"
+  node_year "$@"
+  ;;
 *)
   echo "bad option"
   ;;
