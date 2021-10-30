@@ -12,3 +12,8 @@ The `span.addEvent(name)` can be used to add a simple event with just a name. Th
 
 The `span.AddEvent(name, options)` is a variadic function which can receive a set of optional EventOption parameters. 
 You can use `trace.WithAttributes(...)` as an EventOption to set attributes on a span event.
+
+## Node
+
+The `span.addEvent(name)` can be used to add a simple event with just a name. The method is overloaded with 
+`span.addEvent(name, attributes)` to add an event with 1 or more attributes.

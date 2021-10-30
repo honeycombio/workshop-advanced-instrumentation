@@ -18,7 +18,7 @@ attributes.
 
 ## Node
 
-When creating/starting a span in Node, the startSpan function can receive an optional set of `SpanOption` arguments. Using  
-`tracer.startSpan(name: string, options?: SpanOptions, context?: Context): Span`, links can be added to the span at creation time. Links are created using a `SpanContext` and optional
-attributes. https://open-telemetry.github.io/opentelemetry-js-api/interfaces/tracer.html#startspan
+When creating/starting a span in Node, the startSpan function can receive an optional set of `SpanOptions` arguments. Using  
+`tracer.startSpan(name: string, options?: SpanOptions, context?: Context): Span`, [links](https://open-telemetry.github.io/opentelemetry-js-api/interfaces/tracer.html#startspan) can be added to the span at creation time. Links are created using a `SpanContext` and optional
+attributes. 
 

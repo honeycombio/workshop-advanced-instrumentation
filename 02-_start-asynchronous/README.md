@@ -14,3 +14,7 @@ part of a new trace.
 
 A function is called in a go routine. A new span is created within this function using `context.Background()`. Since the 
 background context is unaware of our trace context, the span belongs to a separate trace.
+
+## NodeJS
+
+An async function is called. A new span is created within this function using async / await methods and will attach to the current context.  Node's single threaded, event loop nature will automatically handle the asynchonous nature of the node event loop.

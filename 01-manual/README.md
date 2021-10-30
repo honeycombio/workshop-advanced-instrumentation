@@ -21,3 +21,11 @@ existing spans and/or new spans.
 
 Go requires to explicitly pass context for manual instrumentation. Span context is stored in the general context as a value.
 You can get access to the current span from that context with `trace.SpanFromContext(ctx)`.
+
+## Node
+Auto-instrumentation for a Node service requires code to be added to the service's startup. This can be done by requiring / importing a file first. The easiest way to do this is with the -r command. Once added, spans will be
+emitted for instrumented frameworks (ie: expressjs). Traces emitted can be extending with additional attributes to
+existing spans and/or new spans.
+
+Node requires to explicitly pass context for manual instrumentation. Span context is stored in the general context as a value.
+You can get access to the current span from that context with `let activeSpan = trace.getSpan(api.context.active());`.
