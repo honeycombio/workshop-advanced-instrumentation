@@ -15,3 +15,10 @@ that accepts attributes can also be used to add a span link.
 When creating/starting a span in Go, the variadic function can receive an optional set of `SpanOption` arguments. Using  
 `trace.WithLinks(trace.Link{SpanContext: spanContext})`, links can be added to the span at creation time. Links are created using a `SpanContext` and optional
 attributes.
+
+## Node
+
+When creating/starting a span in Node, the startSpan function can receive an optional set of `SpanOption` arguments. Using  
+`tracer.startSpan(name: string, options?: SpanOptions, context?: Context): Span`, links can be added to the span at creation time. Links are created using a `SpanContext` and optional
+attributes. https://open-telemetry.github.io/opentelemetry-js-api/interfaces/tracer.html#startspan
+

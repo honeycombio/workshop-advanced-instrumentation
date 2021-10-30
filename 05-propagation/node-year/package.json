@@ -1,0 +1,19 @@
+{
+  "name": "nodejs-year",
+  "version": "1.0.0",
+  "description": "",
+  "main": "node-year.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.4.2",
+    "@opentelemetry/api": "^1.0.3",
+    "@opentelemetry/auto-instrumentations-node": "^0.26.0",
+    "@opentelemetry/exporter-collector-grpc": "^0.25.0",
+    "@opentelemetry/sdk-node": "^0.26.0",
+    "express": "^4.17.1"
+  },
+  "author": "",
+  "license": "ISC"
+}

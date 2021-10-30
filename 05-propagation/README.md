@@ -21,6 +21,10 @@ the SDK, though different languages implement this nuance differently.
 When using the Java Agent, trace propagation for W3C headers is automatically enabled for all integrations. Nothing 
 additional is required.
 
+## Node
+
+When using the Node SDK, trace propagation for W3C headers is automatically enabled for all integrations. Nothing 
+additional is required.
 ## Go
 
 As of 0.20.0, the Go Gorilla/mux integration does not specify a propagator. One can be specified with the 
