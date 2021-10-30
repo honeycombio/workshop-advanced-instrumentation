@@ -1,7 +1,6 @@
 'use strict';
-const loadtracing = require('./tracing.js');
+
 const { trace, context } = require('@opentelemetry/api');
-const { Worker, isMainThread, SHARE_ENV, workerData } = require('worker_threads')
 
 const express = require('express');
 
@@ -12,21 +11,27 @@ const HOST = '0.0.0.0';
 // App
 const app = express();
 app.get('/year', async (req, res) => {
+
+  let activeSpan = trace.getSpan(context.active());
+  activeSpan.setAttribute("foo", 'bar');
+  doSomeWork();
   const year = await getYear(years);
 
   res.send(`${year}`);
 });
 
 
-function doRandomWork(max_wait_time) {
+function sleep(wait_time) {
   // mock some work by sleeping
-  const wait_time = Math.floor(Math.random() * max_wait_time) + 1;
   return new Promise((resolve, reject) => {
     setTimeout(resolve, wait_time);
   })
 }
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max) + 1;
+}
 
-function doSomeWork(wait_time) {
+async function doSomeWork() {
 
   //Notice, which span is this span's parent?
   const tracer = trace.getTracer("node-year.js");
@@ -34,12 +39,8 @@ function doSomeWork(wait_time) {
 
   span.setAttribute('otel', 'rocks');
   // mock some work by sleeping
-  return new Promise(((resolve, reject) => {
-    setTimeout(() => {
-      span.end();
-      resolve();
-    }, wait_time);
-  }));
+  await sleep(500);
+  span.end();
 }
 
 const years = [2015, 2016, 2017, 2018, 2019, 2020];
@@ -53,14 +54,9 @@ async function getYear() {
 
   span.setAttributes({ 'year': year, 'random-index': rnd });
 
-  await doRandomWork(250);
-  //wrap work underneath current span
-  context.with(trace.setSpan(context.active(), span), () => {
-    doSomeWork(500);
-  });
+  await sleep(getRandomInt(250));
+
   span.end();
-
-
 
   return year;
 }

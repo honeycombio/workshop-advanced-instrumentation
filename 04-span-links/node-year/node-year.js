@@ -3,11 +3,12 @@
 const { trace, context } = require('@opentelemetry/api');
 
 const express = require('express');
+const { spawn } = require('child_process');
 
 // Constants
 const PORT = 6001;
 const HOST = '0.0.0.0';
-
+const tracer = trace.getTracer("node-year.js");
 // App
 const app = express();
 app.get('/year', async (req, res) => {
@@ -27,26 +28,56 @@ function sleep(wait_time) {
     setTimeout(resolve, wait_time);
   })
 }
+function sleepSync(wait_time) {
+  var waitTill = new Date(new Date().getTime() + wait_time);
+  while(waitTill > new Date()){}
+}
 function getRandomInt(max) {
   return Math.floor(Math.random() * max) + 1;
 }
 
 async function doSomeWork() {
 
-  //Notice, which span is this span's parent?
-  const tracer = trace.getTracer("node-year.js");
   const span = tracer.startSpan("some-work");
 
   span.setAttribute('otel', 'rocks');
   // mock some work by sleeping
-  await sleep(500);
+  await sleep(getRandomInt(250));
+  span.addEvent('my event', { 'more': 'details' });
+  await sleep(getRandomInt(150) + 100);
+  span.addEvent('another event');
+  generateLinkedTrace();
   span.end();
 }
 
+async function generateLinkedTrace() {
+
+  let activeSpan = trace.getSpan(context.active());
+  tracer.startActiveSpan('node-generated-span', { root: true, attributes: { 'depth': 1 }, links: [{ context: activeSpan.spanContext() }] }, span => {
+    sleepSync(getRandomInt(250));
+    addRecursiveSpan(2, 5);
+    span.end();
+  });
+
+
+}
+async function addRecursiveSpan(depth, maxDepth) {
+
+  tracer.startActiveSpan('generated-span', { attributes: { 'depth': depth } }, span => {
+    sleepSync(getRandomInt(250));
+    if (depth < maxDepth) {
+      addRecursiveSpan(depth + 1, maxDepth)
+    } 
+    span.end();
+    
+
+  });
+
+}
 const years = [2015, 2016, 2017, 2018, 2019, 2020];
 
 async function getYear() {
-  const tracer = trace.getTracer("node-year.js");
+
   const span = tracer.startSpan("getYear");
 
   const rnd = Math.floor(Math.random() * years.length);

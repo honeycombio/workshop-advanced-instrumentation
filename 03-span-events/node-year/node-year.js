@@ -1,8 +1,8 @@
 'use strict';
-
 const { trace, context } = require('@opentelemetry/api');
 
 const express = require('express');
+const { spawn } = require('child_process');
 
 // Constants
 const PORT = 6001;
@@ -39,7 +39,10 @@ async function doSomeWork() {
 
   span.setAttribute('otel', 'rocks');
   // mock some work by sleeping
-  await sleep(500);
+  await sleep(getRandomInt(250));
+  span.addEvent('my event', { 'more':'details' });
+  await sleep(getRandomInt(150) + 100);
+  span.addEvent('another event');
   span.end();
 }
 
