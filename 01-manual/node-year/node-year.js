@@ -18,6 +18,8 @@ const HOST = '0.0.0.0';
 // App
 const app = express();
 app.get('/year', async (req, res) => {
+  let activeSpan = trace.getSpan(context.active());
+  activeSpan.setAttribute("foo", 'bar');
   const year = await getYear(years);
 
   res.send(`${year}`);
