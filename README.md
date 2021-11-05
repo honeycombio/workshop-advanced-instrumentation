@@ -45,7 +45,7 @@ To create the environment variables you go to your [GitPod user variables](https
 
 ### Launch workshop in GitPod
 
-You can launch the workshop with this GitPod url: [https://gitpod.io/#prebuild/https://github.com/honeycombio/workshop-advanced-instrumentation](https://gitpod.io/#prebuild/https://github.com/honeycombio/workshop-advanced-instrumentation)
+You can launch the workshop with this GitPod url: [https://gitpod.io/#https://github.com/honeycombio/workshop-advanced-instrumentation](https://gitpod.io/#https://github.com/honeycombio/workshop-advanced-instrumentation)
 
 
 ## Using Local System
