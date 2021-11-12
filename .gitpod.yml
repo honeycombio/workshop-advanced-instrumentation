@@ -1,0 +1,6 @@
+
+tasks:
+  - name: "Startup"
+    command: 'echo "look at me"'
+
+workspaceLocation: "./workshop-advanced-instrumentation/advanced-instrumentation.code-workspace"

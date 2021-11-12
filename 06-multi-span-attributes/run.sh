@@ -26,6 +26,8 @@ go_year() {
 
 java_name() {
 
+  JAR_NAME=$(basename $(pwd))-java-name.jar
+
   cd java-name || exit
 
   gradle bootJar
@@ -34,13 +36,15 @@ java_name() {
   export SERVICE_NAME="java-name"
 
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent-0.6.1-all.jar -jar build/libs/java-name.jar &
+    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent-0.6.1-all.jar -jar build/libs/$JAR_NAME &
   else
-    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent-0.6.1-all.jar -jar build/libs/java-name.jar
+    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent-0.6.1-all.jar -jar build/libs/$JAR_NAME
   fi
 }
 
 java_year() {
+
+  JAR_NAME=$(basename $(pwd))-java-year.jar
 
   cd java-year || exit
 
@@ -49,9 +53,9 @@ java_year() {
   export SERVICE_NAME="java-year"
 
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent-0.6.1-all.jar -jar build/libs/java-year.jar &
+    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent-0.6.1-all.jar -jar build/libs/$JAR_NAME &
   else
-    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent-0.6.1-all.jar -jar build/libs/java-year.jar
+    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent-0.6.1-all.jar -jar build/libs/$JAR_NAME
   fi
 }
 

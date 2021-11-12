@@ -14,14 +14,16 @@ go_year() {
 
 java_year() {
 
+  JAR_NAME=$(basename $(pwd))-java-year.jar
+
   cd java-year || exit
 
   gradle bootJar
 
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    java -jar build/libs/java-year.jar &
+    java -jar build/libs/$JAR_NAME &
   else
-    java -jar build/libs/java-year.jar
+    java -jar build/libs/$JAR_NAME
   fi
 }
 node_year() {

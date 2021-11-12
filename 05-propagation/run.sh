@@ -26,6 +26,8 @@ go_year() {
 
 java_year() {
 
+  JAR_NAME=$(basename $(pwd))-java-year.jar
+
   cd java-year || exit
 
   gradle bootJar
@@ -36,9 +38,9 @@ java_year() {
   export OTEL_RESOURCE_ATTRIBUTES="service.name=java-year"
 
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    java -javaagent:../../lib/opentelemetry-javaagent-all.jar -jar build/libs/java-year.jar &
+    java -javaagent:../../lib/opentelemetry-javaagent-all.jar -jar build/libs/$JAR_NAME &
   else
-    java -javaagent:../../lib/opentelemetry-javaagent-all.jar -jar build/libs/java-year.jar
+    java -javaagent:../../lib/opentelemetry-javaagent-all.jar -jar build/libs/$JAR_NAME
   fi
 }
 

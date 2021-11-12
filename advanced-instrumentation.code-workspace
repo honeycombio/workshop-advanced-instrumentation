@@ -1,0 +1,37 @@
+{
+	"folders": [
+		{
+			"path": "01-_start-manual"
+		},
+		{
+			"path": "01-manual"
+		},
+		{
+			"path": "02-_start-asynchronous"
+		},
+		{
+			"path": "02-asynchronous"
+		},
+		{
+			"path": "03-span-events"
+		},
+		{
+			"path": "04-span-links"
+		},
+		{
+			"path": "05-_start-propagation"
+		},
+		{
+			"path": "05-propagation"
+		},
+		{
+			"path": "06-multi-span-attributes"
+		},
+		{
+			"path": "lib"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}
