@@ -1,13 +1,22 @@
+import os
 import asyncio
 import random
 
 from fastapi import FastAPI, Request
 from opentelemetry import trace
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import \
+    OTLPSpanExporter
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import (BatchSpanProcessor,
                                             ConsoleSpanExporter)
 
 app = FastAPI()
+
+# create the OTLP exporter to send data an insecure OpenTelemetry Collector
+otlp_exporter = OTLPSpanExporter(
+    endpoint="https://api.honeycomb.io",
+    insecure=True
+)
 
 trace.set_tracer_provider(TracerProvider())
 tracer = trace.get_tracer_provider().get_tracer(__name__)
