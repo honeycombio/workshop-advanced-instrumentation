@@ -10,6 +10,7 @@ from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
+# Uncomment the line below if using ConsoleSpanExporter
 # from opentelemetry.sdk.trace.export import ConsoleSpanExporter
 
 app = FastAPI()
@@ -43,14 +44,17 @@ def getRandomInt(max):
 
 async def determineYear():
     years = [2015, 2016, 2017, 2018, 2019, 2020]
-    # Attach a new child and update the current span
-    with tracer.start_span("getYear"):
+    # Start a new child span
+    active_span = tracer.start_span("getYear")
+    with tracer.start_span("getYear") as activeSpan:
         rnd = getRandomInt(250)
+        active_span.set_attribute("random-index", rnd)
         # divide by 1000 to convert to milliseconds
         await asyncio.sleep(rnd/1000)
         # get a random element from the list of years
         year = random.choice(years)
-        return year
+        active_span.set_attribute("random-year", year)
+    return year
 
 
 # App
@@ -60,6 +64,7 @@ async def root():
 
 @app.get("/year")
 async def year(request: Request, status_code=status.HTTP_200_OK):
-    with tracer.start_as_current_span("/year"):
+    with tracer.start_as_current_span("/year") as current_span:
+        current_span.set_attribute("foo", "bar")
         result = await determineYear()
         return {"year": result}
