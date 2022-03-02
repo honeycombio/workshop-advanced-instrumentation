@@ -35,6 +35,17 @@ node_year() {
     node node-year.js
   fi
 }
+python_year() {
+  cd python-year || exit
+
+  pip install -r requirements.txt
+
+  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
+    uvicorn python-year:app --host 0.0.0.0 --port 6001 &
+  else
+    uvicorn python-year:app --host 0.0.0.0 --port 6001
+  fi
+}
 
 case $1 in
 
@@ -51,6 +62,11 @@ case $1 in
 "node-year")
   echo "node-year"
   node_year "$@"
+  ;;
+
+"python-year")
+  echo "python-year"
+  python_year "$@"
   ;;
 *)
   echo "bad option"
