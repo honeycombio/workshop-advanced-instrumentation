@@ -14,8 +14,7 @@ app = FastAPI()
 
 # create the OTLP exporter to send data an insecure OpenTelemetry Collector
 otlp_exporter = OTLPSpanExporter(
-    endpoint="https://api.honeycomb.io",
-    insecure=True
+    endpoint="https://api.honeycomb.io"
 )
 
 trace.set_tracer_provider(TracerProvider())
