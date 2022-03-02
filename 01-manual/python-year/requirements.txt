@@ -7,10 +7,11 @@ click==8.0.4
 Deprecated==1.2.13
 fastapi==0.74.1
 googleapis-common-protos==1.55.0
+grpcio==1.44.0
 h11==0.13.0
 idna==3.3
 opentelemetry-api==1.9.1
-opentelemetry-exporter-otlp-proto-http==1.9.1
+opentelemetry-exporter-otlp-proto-grpc==1.9.1
 opentelemetry-instrumentation==0.28b1
 opentelemetry-instrumentation-asgi==0.28b1
 opentelemetry-instrumentation-fastapi==0.28b1
@@ -21,6 +22,7 @@ opentelemetry-util-http==0.28b1
 protobuf==3.19.4
 pydantic==1.9.0
 requests==2.27.1
+six==1.16.0
 sniffio==1.2.0
 starlette==0.17.1
 typing_extensions==4.1.1
