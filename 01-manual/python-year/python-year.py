@@ -23,7 +23,7 @@ resource = Resource(attributes={
 
 # create the OTLP exporter to send data to an insecure OpenTelemetry Collector
 otlp_exporter = OTLPSpanExporter(
-    endpoint="grpc://api.honeycomb.io", 
+    endpoint="https://api.honeycomb.io", 
     insecure=True,
     headers=(
         ('x-honeycomb-team', os.getenv("HONEYCOMB_API_KEY", "")),
@@ -46,14 +46,14 @@ async def determineYear():
     years = [2015, 2016, 2017, 2018, 2019, 2020]
     # Start a new child span
     active_span = tracer.start_span("getYear")
-    with tracer.start_span("getYear") as activeSpan:
-        rnd = getRandomInt(250)
-        active_span.set_attribute("random-index", rnd)
-        # divide by 1000 to convert to milliseconds
-        await asyncio.sleep(rnd/1000)
-        # get a random element from the list of years
-        year = random.choice(years)
-        active_span.set_attribute("random-year", year)
+    rnd = getRandomInt(250)
+    active_span.set_attribute("random-index", rnd)
+    # divide by 1000 to convert to milliseconds
+    await asyncio.sleep(rnd/1000)
+    # get a random element from the list of years
+    year = random.choice(years)
+    active_span.set_attribute("random-year", year)
+    active_span.end()
     return year
 
 
