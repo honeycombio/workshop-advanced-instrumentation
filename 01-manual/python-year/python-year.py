@@ -67,4 +67,4 @@ async def year(request: Request, status_code=status.HTTP_200_OK):
     with tracer.start_as_current_span("/year") as current_span:
         current_span.set_attribute("foo", "bar")
         result = await determineYear()
-        return {"year": result}
+        return result

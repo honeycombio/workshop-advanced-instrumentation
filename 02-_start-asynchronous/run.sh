@@ -24,9 +24,9 @@ java_year() {
   export OTEL_RESOURCE_ATTRIBUTES="service.name=java-year"
 
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    java -javaagent:../../lib/opentelemetry-javaagent-all.jar -jar build/libs/java-year.jar &
+    java -javaagent:../../lib/opentelemetry-javaagent.jar -jar build/libs/java-year.jar &
   else
-    java -javaagent:../../lib/opentelemetry-javaagent-all.jar -jar build/libs/java-year.jar
+    java -javaagent:../../lib/opentelemetry-javaagent.jar -jar build/libs/java-year.jar
   fi
 }
 
@@ -38,7 +38,19 @@ node_year() {
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
     node -r ./tracing.js node-year.js &
   else
-    node -r ./tracing.js node-year.js
+    node -r ./tracing.js  node-year.js
+  fi
+}
+
+python_year() {
+  cd python-year || exit
+
+  pip install -r requirements.txt
+
+  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
+    uvicorn python-year:app --host 0.0.0.0 --port 6001 &
+  else
+    uvicorn python-year:app --host 0.0.0.0 --port 6001
   fi
 }
 
@@ -58,6 +70,12 @@ case $1 in
   echo "node-year"
   node_year "$@"
   ;;
+
+"python-year")
+  echo "python-year"
+  python_year "$@"
+  ;;
+
 *)
   echo "bad option"
   ;;

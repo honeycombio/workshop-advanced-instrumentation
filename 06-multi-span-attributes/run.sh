@@ -34,9 +34,9 @@ java_name() {
   export SERVICE_NAME="java-name"
 
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent-0.6.1-all.jar -jar build/libs/java-name.jar &
+    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent.jar -jar build/libs/java-name.jar &
   else
-    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent-0.6.1-all.jar -jar build/libs/java-name.jar
+    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent.jar -jar build/libs/java-name.jar
   fi
 }
 
@@ -49,9 +49,9 @@ java_year() {
   export SERVICE_NAME="java-year"
 
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent-0.6.1-all.jar -jar build/libs/java-year.jar &
+    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent.jar -jar build/libs/java-year.jar &
   else
-    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent-0.6.1-all.jar -jar build/libs/java-year.jar
+    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent.jar -jar build/libs/java-year.jar
   fi
 }
 
