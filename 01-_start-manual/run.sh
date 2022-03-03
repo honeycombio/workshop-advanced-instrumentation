@@ -47,6 +47,7 @@ python_year() {
   fi
 }
 
+
 case $1 in
 
 "go-year")
@@ -68,6 +69,7 @@ case $1 in
   echo "python-year"
   python_year "$@"
   ;;
+
 *)
   echo "bad option"
   ;;
