@@ -42,6 +42,7 @@ FastAPIInstrumentor.instrument_app(app)
 async def year():
     span = trace.get_current_span()
     span.set_attribute("foo", "bar")
+    asyncio.create_task(do_some_work())
     result = await determine_year()
     return result
 
@@ -65,3 +66,36 @@ async def determine_year():
         span.set_attribute("random-year", year)
 
     return year
+
+
+async def do_some_work():
+    span = tracer.start_span("some-work")
+    span.set_attribute("otel", "rocks")
+
+    await asyncio.sleep(get_random_int(250) / 1000)
+    span.add_event("my event", attributes={"more": "details"})
+    await asyncio.sleep((get_random_int(150) + 100) / 1000)
+    span.add_event("another event")
+
+    asyncio.create_task(generate_linked_trace())
+
+    span.end()
+
+
+async def generate_linked_trace():
+    source_span = trace.get_current_span()
+    with tracer.start_as_current_span("python-generated-span",
+                                      context=trace.Context(),
+                                      attributes={"depth": 1},
+                                      links=[trace.Link(context=source_span.get_span_context())]) as span:
+        await asyncio.sleep(get_random_int(250) / 1000)
+        await add_recursive_span(2, 5)
+
+
+async def add_recursive_span(depth, max_depth):
+    with tracer.start_as_current_span("generated-span",
+                                      attributes={"depth": depth}) as span:
+        await asyncio.sleep(get_random_int(250) / 1000)
+
+        if depth < max_depth:
+            await add_recursive_span(depth + 1, max_depth)

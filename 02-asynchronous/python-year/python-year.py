@@ -42,6 +42,7 @@ FastAPIInstrumentor.instrument_app(app)
 async def year():
     span = trace.get_current_span()
     span.set_attribute("foo", "bar")
+    asyncio.create_task(do_some_work())
     result = await determine_year()
     return result
 
@@ -65,3 +66,10 @@ async def determine_year():
         span.set_attribute("random-year", year)
 
     return year
+
+
+async def do_some_work():
+    span = tracer.start_span("some-work")
+    span.set_attribute("otel", "rocks")
+    await asyncio.sleep(0.5)
+    span.end()
