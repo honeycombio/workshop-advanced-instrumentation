@@ -84,10 +84,10 @@ func getYear(ctx context.Context) int {
 
 func generateLinkedTrace(ctx context.Context) {
 	tracer := otel.Tracer("")
-	spanContext := trace.SpanContextFromContext(ctx)
+	srcSpanCtx := trace.SpanContextFromContext(ctx)
 
 	ctx, span := tracer.Start(context.Background(), "go-generated-span",
-		trace.WithLinks(trace.Link{SpanContext: spanContext}),
+		trace.WithLinks(trace.Link{SpanContext: srcSpanCtx}),
 		trace.WithAttributes(attribute.Int("depth", 1)),
 	)
 	defer span.End()

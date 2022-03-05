@@ -8,7 +8,7 @@ app = FastAPI()
 
 @app.get("/year")
 async def year():
-    result = await determine_year()
+    result = await get_year()
     return result
 
 
@@ -16,7 +16,7 @@ def get_random_int(max):
     return random.randint(1, max)
 
 
-async def determine_year():
+async def get_year():
     years = [2015, 2016, 2017, 2018, 2019, 2020]
     rnd = get_random_int(250)
     await asyncio.sleep(rnd/1000)

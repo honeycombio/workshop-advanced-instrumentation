@@ -30,11 +30,11 @@ public class YearController {
 		Runnable runnable = () -> { doSomeWork(); };
 		new Thread(Context.current().wrap(runnable)).start();
 
-		return getRandomYear();
+		return getYear();
 	}
 
 	@WithSpan("random-year")
-	public String getRandomYear() {
+	public String getYear() {
 		int rnd = generator.nextInt(YEARS.length);
 		Span.current().setAttribute("random-index", rnd);
 		

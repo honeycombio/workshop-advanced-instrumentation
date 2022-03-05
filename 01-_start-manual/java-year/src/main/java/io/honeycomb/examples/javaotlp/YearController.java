@@ -19,10 +19,10 @@ public class YearController {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		return getRandomYear();
+		return getYear();
 	}
 
-	public String getRandomYear() {
+	public String getYear() {
 		int rnd = generator.nextInt(YEARS.length);
 		try {
 			Thread.sleep(generator.nextInt(250));
