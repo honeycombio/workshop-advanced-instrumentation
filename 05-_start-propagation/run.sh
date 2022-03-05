@@ -1,17 +1,5 @@
 #!/bin/bash
 
-go_name() {
-  cd go-name || exit
-
-  go build -o bin/go-name main.go
-
-  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    bin/go-name &
-  else
-    bin/go-name
-  fi
-}
-
 go_year() {
   cd go-year || exit
 
@@ -50,16 +38,23 @@ node_year() {
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
     node -r ./tracing.js node-year.js &
   else
-    node -r ./tracing.js node-year.js
+    node -r ./tracing.js  node-year.js
+  fi
+}
+
+python_year() {
+  cd python-year || exit
+
+  pip install -r requirements.txt
+
+  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
+    uvicorn python-year:app --host 0.0.0.0 --port 6001 &
+  else
+    uvicorn python-year:app --host 0.0.0.0 --port 6001
   fi
 }
 
 case $1 in
-
-"go-name")
-  echo "go-name"
-  go_name "$@"
-  ;;
 
 "go-year")
   echo "go-year"
@@ -75,7 +70,12 @@ case $1 in
   echo "node-year"
   node_year "$@"
   ;;
-  
+
+"python-year")
+  echo "python-year"
+  python_year "$@"
+  ;;
+
 *)
   echo "bad option"
   ;;
