@@ -80,7 +80,7 @@ public class YearController {
 
         Tracer tracer = GlobalOpenTelemetry.getTracer("");
 
-        Span span = tracer.spanBuilder("generated-span")
+        Span span = tracer.spanBuilder("java-generated-span")
                 .setNoParent()
                 .addLink(spanContext)
                 .setAttribute("depth", 1)
