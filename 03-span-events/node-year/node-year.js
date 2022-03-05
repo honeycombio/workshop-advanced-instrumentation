@@ -1,19 +1,19 @@
 'use strict';
-const { trace, context } = require('@opentelemetry/api');
 
-const express = require('express');
-const { spawn } = require('child_process');
+const { trace, context } = require("@opentelemetry/api");
+const express = require("express");
 
 // Constants
 const PORT = 6001;
-const HOST = '0.0.0.0';
+const HOST = "0.0.0.0";
+const tracer = trace.getTracer("node-year.js");
 
 // App
 const app = express();
-app.get('/year', async (req, res) => {
+app.get("/year", async (req, res) => {
 
   let activeSpan = trace.getSpan(context.active());
-  activeSpan.setAttribute("foo", 'bar');
+  activeSpan.setAttribute("foo", "bar");
   doSomeWork();
   const year = await getYear(years);
 
@@ -33,29 +33,27 @@ function getRandomInt(max) {
 
 async function doSomeWork() {
 
-  //Notice, which span is this span's parent?
-  const tracer = trace.getTracer("node-year.js");
   const span = tracer.startSpan("some-work");
 
-  span.setAttribute('otel', 'rocks');
+  span.setAttribute("otel", "rocks");
   // mock some work by sleeping
   await sleep(getRandomInt(250));
-  span.addEvent('my event', { 'more':'details' });
+  span.addEvent("my event", { "more": "details" });
   await sleep(getRandomInt(150) + 100);
-  span.addEvent('another event');
+  span.addEvent("another event");
   span.end();
 }
 
 const years = [2015, 2016, 2017, 2018, 2019, 2020];
 
 async function getYear() {
-  const tracer = trace.getTracer("node-year.js");
+
   const span = tracer.startSpan("getYear");
 
   const rnd = Math.floor(Math.random() * years.length);
   const year = years[rnd];
 
-  span.setAttributes({ 'year': year, 'random-index': rnd });
+  span.setAttributes({ "year": year, "random-index": rnd });
 
   await sleep(getRandomInt(250));
 

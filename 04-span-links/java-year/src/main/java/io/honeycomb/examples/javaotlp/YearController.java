@@ -35,11 +35,11 @@ public class YearController {
         };
         new Thread(Context.current().wrap(runnable)).start();
 
-        return getRandomYear();
+        return getYear();
     }
 
     @WithSpan("random-year")
-    public String getRandomYear() {
+    public String getYear() {
         int rnd = generator.nextInt(YEARS.length);
         Span.current().setAttribute("random-index", rnd);
 
@@ -76,13 +76,13 @@ public class YearController {
     }
 
     private void generateLinkedTrace() {
-        SpanContext spanContext = Span.current().getSpanContext();
+        Span sourceSpan = Span.current();
 
         Tracer tracer = GlobalOpenTelemetry.getTracer("");
 
         Span span = tracer.spanBuilder("java-generated-span")
                 .setNoParent()
-                .addLink(spanContext)
+                .addLink(sourceSpan.getSpanContext())
                 .setAttribute("depth", 1)
                 .startSpan();
         span.makeCurrent();

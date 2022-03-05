@@ -1,20 +1,19 @@
 'use strict';
 
-const { trace, context } = require('@opentelemetry/api');
-
-const express = require('express');
-const { spawn } = require('child_process');
+const { trace, context } = require("@opentelemetry/api");
+const express = require("express");
 
 // Constants
 const PORT = 6001;
-const HOST = '0.0.0.0';
+const HOST = "0.0.0.0";
 const tracer = trace.getTracer("node-year.js");
+
 // App
 const app = express();
-app.get('/year', async (req, res) => {
+app.get("/year", async (req, res) => {
 
   let activeSpan = trace.getSpan(context.active());
-  activeSpan.setAttribute("foo", 'bar');
+  activeSpan.setAttribute("foo", "bar");
   doSomeWork();
   const year = await getYear(years);
 
@@ -40,20 +39,20 @@ async function doSomeWork() {
 
   const span = tracer.startSpan("some-work");
 
-  span.setAttribute('otel', 'rocks');
+  span.setAttribute("otel", "rocks");
   // mock some work by sleeping
   await sleep(getRandomInt(250));
-  span.addEvent('my event', { 'more': 'details' });
+  span.addEvent("my event", { "more": "details" });
   await sleep(getRandomInt(150) + 100);
-  span.addEvent('another event');
+  span.addEvent("another event");
   generateLinkedTrace();
   span.end();
 }
 
 async function generateLinkedTrace() {
 
-  let activeSpan = trace.getSpan(context.active());
-  tracer.startActiveSpan('node-generated-span', { root: true, attributes: { 'depth': 1 }, links: [{ context: activeSpan.spanContext() }] }, span => {
+  let sourceSpan = trace.getSpan(context.active());
+  tracer.startActiveSpan("node-generated-span", { root: true, attributes: { "depth": 1 }, links: [{ context: sourceSpan.spanContext() }] }, span => {
     sleepSync(getRandomInt(250));
     addRecursiveSpan(2, 5);
     span.end();
@@ -63,7 +62,7 @@ async function generateLinkedTrace() {
 }
 async function addRecursiveSpan(depth, maxDepth) {
 
-  tracer.startActiveSpan('generated-span', { attributes: { 'depth': depth } }, span => {
+  tracer.startActiveSpan("generated-span", { attributes: { "depth": depth } }, span => {
     sleepSync(getRandomInt(250));
     if (depth < maxDepth) {
       addRecursiveSpan(depth + 1, maxDepth)
@@ -83,7 +82,7 @@ async function getYear() {
   const rnd = Math.floor(Math.random() * years.length);
   const year = years[rnd];
 
-  span.setAttributes({ 'year': year, 'random-index': rnd });
+  span.setAttributes({ "year": year, "random-index": rnd });
 
   await sleep(getRandomInt(250));
 

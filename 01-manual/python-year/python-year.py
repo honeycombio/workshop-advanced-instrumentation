@@ -42,7 +42,7 @@ FastAPIInstrumentor.instrument_app(app)
 async def year():
     span = trace.get_current_span()
     span.set_attribute("foo", "bar")
-    result = await determine_year()
+    result = await get_year()
     return result
 
 
@@ -50,7 +50,7 @@ def get_random_int(max):
     return random.randint(1, max)
 
 
-async def determine_year():
+async def get_year():
     years = [2015, 2016, 2017, 2018, 2019, 2020]
     # Start a new child span
     with tracer.start_as_current_span("getYear") as span:
