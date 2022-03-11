@@ -5,8 +5,7 @@ import random
 from fastapi import FastAPI
 
 from opentelemetry import trace
-from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import \
-    OTLPSpanExporter
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
@@ -14,17 +13,15 @@ from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
 
 # setup common resource attributes
-resource = Resource(attributes={
-    "service.name": "python-year"
-})
+resource = Resource(attributes={"service.name": "python-year"})
 
 # setup OTLP exporter
 otlp_exporter = OTLPSpanExporter(
     endpoint="https://api.honeycomb.io",
     headers=(
-        ('x-honeycomb-team', os.getenv("HONEYCOMB_API_KEY", "")),
-        ('x-honeycomb-dataset', os.getenv("HONEYCOMB_DATASET", ""))
-    )
+        ("x-honeycomb-team", os.getenv("HONEYCOMB_API_KEY", "")),
+        ("x-honeycomb-dataset", os.getenv("HONEYCOMB_DATASET", "")),
+    ),
 )
 
 # setup trace provider
@@ -59,7 +56,7 @@ async def get_year():
         span.set_attribute("random-index", rnd)
 
         # divide by 1000 to convert to milliseconds
-        await asyncio.sleep(rnd/1000)
+        await asyncio.sleep(rnd / 1000)
 
         # get a random element from the list of years
         year = random.choice(years)
