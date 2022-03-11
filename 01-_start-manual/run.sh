@@ -24,6 +24,7 @@ java_year() {
     java -jar build/libs/java-year.jar
   fi
 }
+
 node_year() {
   cd node-year || exit
 
@@ -35,15 +36,28 @@ node_year() {
     node node-year.js
   fi
 }
+
 python_year() {
   cd python-year || exit
 
   pip install -r requirements.txt
 
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    uvicorn python-year:app --host 0.0.0.0 --port 6001 &
+    echo "Cannot start Python FastAPI server in detached mode. Use without -b option."
   else
     uvicorn python-year:app --host 0.0.0.0 --port 6001
+  fi
+}
+
+elixir_year() {
+  cd elixir_year || exit
+
+  mix deps.get
+
+  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
+    echo "Cannot start Elixir Phoenix server in detached mode. Use without -b option."
+  else
+    mix phx.server
   fi
 }
 
@@ -68,6 +82,11 @@ case $1 in
 "python-year")
   echo "python-year"
   python_year "$@"
+  ;;
+
+"elixir-year")
+  echo "elixir_year"
+  elixir_year "$@"
   ;;
 
 *)
