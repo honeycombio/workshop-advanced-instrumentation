@@ -1,11 +1,6 @@
 image:
   file: .gitpod.Dockerfile
 
-# List the start up tasks. You can start them in parallel in multiple terminals. See https://www.gitpod.io/docs/44_config_start_tasks/
-tasks:
-- init: mix deps.get # runs during prebuild
-  command: eval $(gp env -e) && mix test
-
 github:
   prebuilds:
     # enable for the master/default branch (defaults to true)
@@ -17,7 +12,7 @@ github:
     # enable for pull requests coming from forks (defaults to false)
     pullRequestsFromForks: true
     # add a check to pull requests (defaults to true)
-    addCheck: true
+    addCheck: false
     # add a "Review in Gitpod" button as a comment to pull requests (defaults to false)
     addComment: true
     # add a "Review in Gitpod" button to the pull request's description (defaults to false)
