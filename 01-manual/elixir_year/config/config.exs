@@ -45,10 +45,28 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 # Configure batch span processor
-config :opentelemetry, :processors,
-  otel_batch_processor: %{
-    exporter: {:otel_exporter_stdout, []}
-  }
+# config :opentelemetry, :processors,
+#   otel_batch_processor: %{
+#     exporter: {:otel_exporter_stdout, []}
+#   }
+
+# Configure batch span processor and
+# Opentelemetry exporter to export our
+# telemetry data directly to the Honeycomb OpenTelemetry endpoint
+# For prod you'd likely put this in runtime.exs
+  config :opentelemetry, :processors,
+    otel_batch_processor: %{
+      exporter: {:opentelemetry_exporter, %{
+        endpoints: [
+          {:https, 'api.honeycomb.io', 443 , [
+          ]}
+        ],
+        headers: [
+          {"x-honeycomb-team", System.fetch_env!("HONEYCOMB_API_KEY")},
+          {"x-honeycomb-dataset", System.fetch_env!("HONEYCOMB_DATASET")}
+        ]
+      }}
+    }
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

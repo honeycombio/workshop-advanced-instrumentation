@@ -40,23 +40,6 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
-  # OpenTelemetry config to export our telemetry data directly to the Honeycomb OpenTelemetry endpoint
-  config :opentelemetry, :processors,
-    otel_batch_processor: %{
-      exporter: {:opentelemetry_exporter, %{
-        endpoints: [
-          {:https, 'api.honeycomb.io', 443 , [
-          ]}
-        ],
-        headers: [
-          # For more secure approach, consider using environment variable:
-          #   {"x-honeycomb-team", System.fetch_env!("HONEYCOMB_API_KEY")}
-          {"x-honeycomb-team", System.fetch_env!("HONEYCOMB_API_KEY")},
-          {"x-honeycomb-dataset", System.fetch_env!("HONEYCOMB_DATASET")}
-        ]
-      }}
-    }
-
   # ## Using releases
   #
   # If you are doing OTP releases, you need to instruct Phoenix
