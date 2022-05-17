@@ -1,5 +1,17 @@
 #!/bin/bash
 
+go_name() {
+  cd go-name || exit
+
+  go build -o bin/go-name main.go
+
+  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
+    bin/go-name &
+  else
+    bin/go-name
+  fi
+}
+
 go_year() {
   cd go-year || exit
 
@@ -20,8 +32,8 @@ java_year() {
 
   export OTEL_METRICS_EXPORTER="none"
   export OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io"
-  export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY},x-honeycomb-dataset=${HONEYCOMB_DATASET}"
-  export OTEL_RESOURCE_ATTRIBUTES="service.name=java-year"
+  export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY},x-honeycomb-dataset=${HONEYCOMB_DATASET:-workshop}"
+  export OTEL_SERVICE_NAME="java-year"
 
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
     java -javaagent:../../lib/opentelemetry-javaagent.jar -jar build/libs/java-year.jar &
@@ -38,23 +50,16 @@ node_year() {
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
     node -r ./tracing.js node-year.js &
   else
-    node -r ./tracing.js  node-year.js
-  fi
-}
-
-python_year() {
-  cd python-year || exit
-
-  pip install -r requirements.txt
-
-  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    uvicorn python-year:app --host 0.0.0.0 --port 6001 &
-  else
-    uvicorn python-year:app --host 0.0.0.0 --port 6001
+    node -r ./tracing.js node-year.js
   fi
 }
 
 case $1 in
+
+"go-name")
+  echo "go-name"
+  go_name "$@"
+  ;;
 
 "go-year")
   echo "go-year"
@@ -70,12 +75,7 @@ case $1 in
   echo "node-year"
   node_year "$@"
   ;;
-
-"python-year")
-  echo "python-year"
-  python_year "$@"
-  ;;
-
+  
 *)
   echo "bad option"
   ;;
