@@ -11,6 +11,9 @@ Make sure to read the speaker notes to get full context on the slide content.
 
 
 ## Running and Stopping workshop services
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/honeycombio/workshop-advanced-instrumentation)
+
 Within each example folder is a `run.sh` and `stop.sh` file. These are used to build and run as well as stop any of the
 services used in the examples. The run script can also be used to start the service in the background for quick testing.
 
