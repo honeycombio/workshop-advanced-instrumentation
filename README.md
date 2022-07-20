@@ -11,6 +11,7 @@ Make sure to read the speaker notes to get full context on the slide content.
 
 
 ## Running and Stopping workshop services
+
 Within each example folder is a `run.sh` and `stop.sh` file. These are used to build and run as well as stop any of the
 services used in the examples. The run script can also be used to start the service in the background for quick testing.
 
@@ -30,6 +31,8 @@ stop.sh [service-name]
 
 ## Using GitPod
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/honeycombio/workshop-advanced-instrumentation)
+
 It is recommended to use GitPod to set up the workshop.
 All required prerequisites are set up for you making allowing you to focus on doing the workshop content right away.
 
@@ -42,11 +45,6 @@ If you don't have a Honeycomb Team you can sign up for a free one [here](https:/
 To create the environment variables you go to your [GitPod user variables](https://gitpod.io/variables) and click the New Variable button.
 1. `HONEYCOMB_API_KEY` set this to your Honeycomb API Key with a Scope of */*
 2. `HONEYCOMB_DATASET` set this to the name of the Honeycomb Dataset to send data to (ie: workshop)
-
-### Launch workshop in GitPod
-
-You can launch the workshop with this GitPod url: [https://gitpod.io/#https://github.com/honeycombio/workshop-advanced-instrumentation](https://gitpod.io/#https://github.com/honeycombio/workshop-advanced-instrumentation)
-
 
 ## Using Local System
 
