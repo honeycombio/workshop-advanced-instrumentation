@@ -6,107 +6,111 @@ import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.*;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.extension.annotations.WithSpan;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.Random;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Random;
 
 @RestController
 public class YearController {
 
-	private static final String[] YEARS = new String[]{"2015", "2016", "2017", "2018", "2019", "2020"};
-	private static final Random generator = new Random();
+    private static final String[] YEARS = new String[]{"2015", "2016", "2017", "2018", "2019", "2020"};
+    private static final Random generator = new Random();
 
-	@RequestMapping("/year")
-	public String index() {
-		try {
-			Thread.sleep(generator.nextInt(250));
-		} catch (InterruptedException e) {
-			Span.current().setStatus(StatusCode.ERROR);;
-		}
-			
-		Span.current().setAttribute("foo", "bar");
+    @RequestMapping("/year")
+    public String index() {
+        try {
+            Thread.sleep(generator.nextInt(250));
+        } catch (InterruptedException e) {
+            Span.current().setStatus(StatusCode.ERROR);
+            ;
+        }
 
-		Runnable runnable = () -> { doSomeWork(); };
-		new Thread(Context.current().wrap(runnable)).start();
+        Span.current().setAttribute("foo", "bar");
 
-		return getYear();
-	}
+        Runnable runnable = () -> {
+            doSomeWork();
+        };
+        new Thread(Context.current().wrap(runnable)).start();
 
-	@WithSpan("random-year")
-	public String getYear() {
-		int rnd = generator.nextInt(YEARS.length);
-		Span.current().setAttribute("random-index", rnd);
-		
-		try {
-			Thread.sleep(generator.nextInt(250));
-		} catch (InterruptedException e) {
-			Span.current().setStatus(StatusCode.ERROR);
-		}		
-		return YEARS[rnd];
-	}
+        return getYear();
+    }
 
-	public void doSomeWork() {
-		Tracer tracer = GlobalOpenTelemetry.getTracer("");
+    @WithSpan("random-year")
+    public String getYear() {
+        int rnd = generator.nextInt(YEARS.length);
+        Span.current().setAttribute("random-index", rnd);
 
-		Span span = tracer.spanBuilder("some-work").startSpan();
-		try (Scope scope = span.makeCurrent()) {
-			span.setAttribute("otel", "rocks");
-			Thread.sleep(generator.nextInt(250));
-			span.addEvent("my event", Attributes.of(AttributeKey.stringKey("more"), "details"));
-			Thread.sleep(generator.nextInt(150) + 100);
-			span.addEvent("another event");
+        try {
+            Thread.sleep(generator.nextInt(250));
+        } catch (InterruptedException e) {
+            Span.current().setStatus(StatusCode.ERROR);
+        }
+        return YEARS[rnd];
+    }
 
-			Runnable runnable = () -> { generateLinkedTrace(); };
-			new Thread(Context.current().wrap(runnable)).start();
+    public void doSomeWork() {
+        Tracer tracer = GlobalOpenTelemetry.getTracer("");
 
-		} catch (Throwable t) {
-			span.setStatus(StatusCode.ERROR);
-		} finally {
-			span.end();
-		}
+        Span span = tracer.spanBuilder("some-work").startSpan();
+        try (Scope scope = span.makeCurrent()) {
+            span.setAttribute("otel", "rocks");
+            Thread.sleep(generator.nextInt(250));
+            span.addEvent("my event", Attributes.of(AttributeKey.stringKey("more"), "details"));
+            Thread.sleep(generator.nextInt(150) + 100);
+            span.addEvent("another event");
 
-	}
+            Runnable runnable = () -> {
+                generateLinkedTrace();
+            };
+            new Thread(Context.current().wrap(runnable)).start();
 
-	private void generateLinkedTrace() {
-		Span sourceSpan = Span.current();
+        } catch (Throwable t) {
+            span.setStatus(StatusCode.ERROR);
+        } finally {
+            span.end();
+        }
 
-		Tracer tracer = GlobalOpenTelemetry.getTracer("");
+    }
 
-		Span span = tracer.spanBuilder("java-generated-span")
-				.setNoParent()
-				.addLink(sourceSpan.getSpanContext())
-				.setAttribute("depth", 1)
-				.startSpan();
-		span.makeCurrent();
+    private void generateLinkedTrace() {
+        Span sourceSpan = Span.current();
 
-		try {
-			Thread.sleep(250);
-			addRecursiveSpan(2, 5);
-		} catch (InterruptedException e) {
-			span.setStatus(StatusCode.ERROR);
-		}
+        Tracer tracer = GlobalOpenTelemetry.getTracer("");
 
-		span.end();
-	}
+        Span span = tracer.spanBuilder("java-generated-span")
+                .setNoParent()
+                .addLink(sourceSpan.getSpanContext())
+                .setAttribute("depth", 1)
+                .startSpan();
+        span.makeCurrent();
 
-	private void addRecursiveSpan(int depth, int maxDepth) throws InterruptedException {
-		Tracer tracer = GlobalOpenTelemetry.getTracer("");
+        try {
+            Thread.sleep(250);
+            addRecursiveSpan(2, 5);
+        } catch (InterruptedException e) {
+            span.setStatus(StatusCode.ERROR);
+        }
 
-		Span span = tracer.spanBuilder("generated-span")
-				.setAttribute("depth", depth)
-				.startSpan();
-		span.makeCurrent();
+        span.end();
+    }
 
-		Thread.sleep(generator.nextInt(250));
-		if (depth  < maxDepth) {
-			addRecursiveSpan(depth + 1, maxDepth);
-		}
+    private void addRecursiveSpan(int depth, int maxDepth) throws InterruptedException {
+        Tracer tracer = GlobalOpenTelemetry.getTracer("");
 
-		span.end();
-	}
+        Span span = tracer.spanBuilder("generated-span")
+                .setAttribute("depth", depth)
+                .startSpan();
+        span.makeCurrent();
 
+        Thread.sleep(generator.nextInt(250));
+        if (depth < maxDepth) {
+            addRecursiveSpan(depth + 1, maxDepth);
+        }
 
+        span.end();
+    }
 
 
 }
