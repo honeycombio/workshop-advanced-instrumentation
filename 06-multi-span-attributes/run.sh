@@ -13,6 +13,11 @@ go_name() {
 }
 
 go_year() {
+  export OTEL_METRICS_EXPORTER="none"
+  export OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io:443"
+  export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY},x-honeycomb-dataset=${HONEYCOMB_DATASET:-workshop}"
+  export OTEL_SERVICE_NAME="go-year"
+
   cd go-year || exit
 
   go build -o bin/go-year main.go

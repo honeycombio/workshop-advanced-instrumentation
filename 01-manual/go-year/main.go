@@ -66,6 +66,28 @@ func getYear(ctx context.Context) int {
 }
 
 func initTracer() func() {
+
+	ctx := context.Background()
+
+	exporter, err := otlptracegrpc.New(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	provider := sdktrace.NewTracerProvider(
+		sdktrace.WithBatcher(exporter),
+	)
+	otel.SetTracerProvider(provider)
+
+	return func() {
+		ctx := context.Background()
+		err := provider.Shutdown(ctx)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+}
+
+func initTracerTheHardWay() func() {
 	apikey, _ := os.LookupEnv("HONEYCOMB_API_KEY")
 	dataset, _ := os.LookupEnv("HONEYCOMB_DATASET")
 
