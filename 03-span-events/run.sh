@@ -35,10 +35,15 @@ node_year() {
 
   npm install
 
+  export OTEL_METRICS_EXPORTER="none"
+  export OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io"
+  export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY},x-honeycomb-dataset=${HONEYCOMB_DATASET:-workshop}"
+  export OTEL_SERVICE_NAME="node-year"
+
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
     node -r ./tracing.js node-year.js &
   else
-    node -r ./tracing.js  node-year.js
+    node -r ./tracing.js node-year.js
   fi
 }
 
@@ -51,6 +56,18 @@ python_year() {
     uvicorn python-year:app --host 0.0.0.0 --port 6001 &
   else
     uvicorn python-year:app --host 0.0.0.0 --port 6001
+  fi
+}
+
+elixir_year() {
+  cd elixir_year || exit
+
+  mix deps.get
+
+  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
+    echo "Cannot start Elixir Phoenix server in detached mode. Use without -b option."
+  else
+    mix phx.server
   fi
 }
 
@@ -74,6 +91,11 @@ case $1 in
 "python-year")
   echo "python-year"
   python_year "$@"
+  ;;
+
+"elixir-year")
+  echo "elixir-year"
+  elixir_year "$@"
   ;;
 
 *)

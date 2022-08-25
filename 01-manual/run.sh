@@ -35,10 +35,15 @@ node_year() {
 
   npm install
 
+  export OTEL_METRICS_EXPORTER="none"
+  export OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io"
+  export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY},x-honeycomb-dataset=${HONEYCOMB_DATASET:-workshop}"
+  export OTEL_SERVICE_NAME="node-year"
+
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
     node -r ./tracing.js node-year.js &
   else
-    node -r ./tracing.js  node-year.js
+    node -r ./tracing.js node-year.js
   fi
 }
 
