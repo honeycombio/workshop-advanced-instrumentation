@@ -98,6 +98,16 @@ case $1 in
   java_year "$@"
   ;;
 
+"node-year")
+  echo "node-year"
+  node_year "$@"
+  ;;
+
+"python-year")
+  echo "python-year"
+  python_year "$@"
+  ;;
+
 *)
   echo "bad option"
   ;;
