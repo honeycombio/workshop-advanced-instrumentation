@@ -82,9 +82,6 @@ func initTracer() func() {
 	apikey, _ := os.LookupEnv("HONEYCOMB_API_KEY")
 	dataset, _ := os.LookupEnv("HONEYCOMB_DATASET")
 
-	// Initialize an OTLP exporter over gRPC and point it to Honeycomb.
-	ctx := context.Background()
-
 	// Set GRPC options to establish an insecure connection to an OpenTelemetry Collector
 	opts := []otlptracegrpc.Option{
 		otlptracegrpc.WithTLSCredentials(credentials.NewClientTLSFromCert(nil, "")),
@@ -96,7 +93,7 @@ func initTracer() func() {
 	}
 
 	// Create the exporter
-	exporter, err := otlptrace.New(ctx, otlptracegrpc.NewClient(opts...))
+	exporter, err := otlptrace.New(context.Background(), otlptracegrpc.NewClient(opts...))
 	if err != nil {
 		log.Fatalf("failed to create Otel exporter: %v", err)
 	}
