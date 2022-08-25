@@ -6,20 +6,15 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/gorilla/mux"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
-	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
 	"go.opentelemetry.io/otel/trace"
-	"google.golang.org/grpc/credentials"
 )
 
 var years = []int{2015, 2016, 2017, 2018, 2019, 2020}
@@ -77,36 +72,18 @@ func getYear(ctx context.Context) int {
 }
 
 func initTracer() func() {
-	apikey, _ := os.LookupEnv("HONEYCOMB_API_KEY")
-	dataset, _ := os.LookupEnv("HONEYCOMB_DATASET")
 
-	// Set GRPC options to establish an insecure connection to an OpenTelemetry Collector
-	opts := []otlptracegrpc.Option{
-		otlptracegrpc.WithTLSCredentials(credentials.NewClientTLSFromCert(nil, "")),
-		otlptracegrpc.WithEndpoint("api.honeycomb.io:443"),
-		otlptracegrpc.WithHeaders(map[string]string{
-			"x-honeycomb-team":    apikey,
-			"x-honeycomb-dataset": dataset,
-		}),
-	}
+	ctx := context.Background()
 
-	// Create the exporter
-	exporter, err := otlptrace.New(context.Background(), otlptracegrpc.NewClient(opts...))
+	exporter, err := otlptracegrpc.New(ctx)
 	if err != nil {
-		log.Fatalf("failed to create Otel exporter: %v", err)
+		log.Fatal(err)
 	}
-
 	provider := sdktrace.NewTracerProvider(
-		sdktrace.WithSampler(sdktrace.AlwaysSample()),
 		sdktrace.WithBatcher(exporter),
-		sdktrace.WithResource(resource.NewWithAttributes(
-			semconv.SchemaURL,
-			semconv.ServiceNameKey.String("go-year"),
-		)),
 	)
 	otel.SetTracerProvider(provider)
 
-	// This callback will ensure all spans get flushed before the program exits.
 	return func() {
 		ctx := context.Background()
 		err := provider.Shutdown(ctx)
