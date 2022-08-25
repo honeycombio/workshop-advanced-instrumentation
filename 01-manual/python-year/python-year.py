@@ -1,38 +1,22 @@
 import asyncio
-import os
 import random
 
 from fastapi import FastAPI
 
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
-from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
-from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
-
-# setup common resource attributes
-resource = Resource(attributes={"service.name": "python-year"})
-
-# setup OTLP exporter
-otlp_exporter = OTLPSpanExporter(
-    endpoint="https://api.honeycomb.io",
-    headers=(
-        ("x-honeycomb-team", os.getenv("HONEYCOMB_API_KEY", "")),
-        ("x-honeycomb-dataset", os.getenv("HONEYCOMB_DATASET", "")),
-    ),
-)
 
 # setup trace provider
-provider = TracerProvider(resource=resource)
-provider.add_span_processor(BatchSpanProcessor(otlp_exporter))
-trace.set_tracer_provider(provider)
+tracer_provider = TracerProvider()
+trace.set_tracer_provider(tracer_provider)
+tracer_provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter()))
 
 tracer = trace.get_tracer(__name__)
 
 app = FastAPI()
-FastAPIInstrumentor.instrument_app(app)
 
 
 @app.get("/year")
