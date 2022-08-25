@@ -49,19 +49,6 @@ python_year() {
   fi
 }
 
-elixir_year() {
-  cd elixir_year || exit
-
-  mix deps.get
-
-  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    echo "Cannot start Elixir Phoenix server in detached mode. Use without -b option."
-  else
-    mix phx.server
-  fi
-}
-
-
 case $1 in
 
 "go-year")
@@ -82,11 +69,6 @@ case $1 in
 "python-year")
   echo "python-year"
   python_year "$@"
-  ;;
-
-"elixir-year")
-  echo "elixir_year"
-  elixir_year "$@"
   ;;
 
 *)
