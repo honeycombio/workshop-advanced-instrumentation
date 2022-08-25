@@ -6,25 +6,39 @@ from fastapi import FastAPI
 
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
+
+# setup common resource attributes
+resource = Resource(attributes={"service.name": "python-year"})
+
+# setup OTLP exporter
+otlp_exporter = OTLPSpanExporter(
+    endpoint="https://api.honeycomb.io",
+    headers=(
+        ("x-honeycomb-team", os.getenv("HONEYCOMB_API_KEY", "")),
+        ("x-honeycomb-dataset", os.getenv("HONEYCOMB_DATASET", "")),
+    ),
+)
 
 # setup trace provider
-tracer_provider = TracerProvider()
-trace.set_tracer_provider(tracer_provider)
-tracer_provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter()))
+provider = TracerProvider(resource=resource)
+provider.add_span_processor(BatchSpanProcessor(otlp_exporter))
+trace.set_tracer_provider(provider)
 
 tracer = trace.get_tracer(__name__)
 
 app = FastAPI()
+FastAPIInstrumentor.instrument_app(app)
 
 
 @app.get("/year")
 async def year():
     span = trace.get_current_span()
     span.set_attribute("foo", "bar")
-    asyncio.create_task(do_some_work())
     result = await get_year()
     return result
 
@@ -48,13 +62,3 @@ async def get_year():
         span.set_attribute("random-year", year)
 
     return year
-
-
-async def do_some_work():
-    span = tracer.start_span("some-work")
-    span.set_attribute("otel", "rocks")
-    await asyncio.sleep(get_random_int(250) / 1000)
-    span.add_event("my event", attributes={"more": "details"})
-    await asyncio.sleep((get_random_int(150) + 100) / 1000)
-    span.add_event("another event")
-    span.end()

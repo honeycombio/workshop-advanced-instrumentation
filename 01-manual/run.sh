@@ -52,10 +52,15 @@ python_year() {
 
   pip install -r requirements.txt
 
+  export OTEL_METRICS_EXPORTER="none"
+  export OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io"
+  export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY},x-honeycomb-dataset=${HONEYCOMB_DATASET:-workshop}"
+  export OTEL_SERVICE_NAME="python-year"
+
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    uvicorn python-year:app --host 0.0.0.0 --port 6001 &
+    opentelemetry-instrument uvicorn python-year:app --host 0.0.0.0 --port 6001 &
   else
-    uvicorn python-year:app --host 0.0.0.0 --port 6001
+    opentelemetry-instrument uvicorn python-year:app --host 0.0.0.0 --port 6001
   fi
 }
 
