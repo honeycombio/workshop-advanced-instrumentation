@@ -9,8 +9,8 @@ repositories {
 }
 
 dependencies {
-	implementation('io.opentelemetry:opentelemetry-api:1.13.0')
-	implementation('io.opentelemetry:opentelemetry-extension-annotations:1.13.0')
+	implementation('io.opentelemetry:opentelemetry-api:1.17.0')
+	implementation('io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:1.17.0-alpha')
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
