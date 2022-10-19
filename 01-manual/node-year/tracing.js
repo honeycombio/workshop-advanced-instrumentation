@@ -1,3 +1,7 @@
+// tracing.js will contain your tracing setup code 
+// tracing setup and configuration should be run before your application code
+// We'll do this with the -r, --require module flag
+
 const process = require('process');
 const opentelemetry = require("@opentelemetry/sdk-node")
 const { getNodeAutoInstrumentations } = require("@opentelemetry/auto-instrumentations-node")

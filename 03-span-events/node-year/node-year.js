@@ -38,6 +38,7 @@ async function doSomeWork() {
   span.setAttribute("otel", "rocks");
   // mock some work by sleeping
   await sleep(getRandomInt(250));
+  // add span event and attributes
   span.addEvent("my event", { "more": "details" });
   await sleep(getRandomInt(150) + 100);
   span.addEvent("another event");

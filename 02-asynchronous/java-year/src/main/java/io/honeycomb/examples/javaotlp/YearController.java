@@ -32,6 +32,9 @@ public class YearController {
         Runnable runnable = () -> {
             doSomeWork();
         };
+        // create a thread and wrap it in current context
+        // each thread in Java gets its own context so we need to specify 
+        // current context
         new Thread(Context.current().wrap(runnable)).start();
 
         return getYear();

@@ -22,26 +22,26 @@ public class YearController {
         try {
             Thread.sleep(generator.nextInt(250));
         } catch (InterruptedException e) {
-            Span.current().setStatus(StatusCode.ERROR);
+            Span.current().setStatus(StatusCode.ERROR); // set span status
             ;
         }
 
-        Span.current().setAttribute("foo", "bar");
+        Span.current().setAttribute("foo", "bar"); // set span attribute
 
         doSomeWork();
 
         return getYear();
     }
 
-    @WithSpan("random-year")
+    @WithSpan("random-year") // create span
     public String getYear() {
         int rnd = generator.nextInt(YEARS.length);
-        Span.current().setAttribute("random-index", rnd);
+        Span.current().setAttribute("random-index", rnd); // get the span and add an attribute
 
         try {
             Thread.sleep(generator.nextInt(250));
         } catch (InterruptedException e) {
-            Span.current().setStatus(StatusCode.ERROR);
+            Span.current().setStatus(StatusCode.ERROR); // set status
             ;
         }
         return YEARS[rnd];
@@ -50,12 +50,12 @@ public class YearController {
     public void doSomeWork() {
         Tracer tracer = GlobalOpenTelemetry.getTracer("");
 
-        Span span = tracer.spanBuilder("some-work").startSpan();
-        try (Scope scope = span.makeCurrent()) {
-            span.setAttribute("otel", "rocks");
+        Span span = tracer.spanBuilder("some-work").startSpan(); // manually start a span
+        try (Scope scope = span.makeCurrent()) { // make it the current span in function scope
+            span.setAttribute("otel", "rocks"); // set attribute
             Thread.sleep(generator.nextInt(250));
         } catch (Throwable t) {
-            span.setStatus(StatusCode.ERROR);
+            span.setStatus(StatusCode.ERROR); // set status
         } finally {
             span.end();
         }

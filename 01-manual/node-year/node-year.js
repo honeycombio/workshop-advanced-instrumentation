@@ -6,14 +6,14 @@ const express = require("express");
 // Constants
 const PORT = 6001;
 const HOST = "0.0.0.0";
-const tracer = trace.getTracer("node-year.js");
+const tracer = trace.getTracer("node-year.js"); // get tracer and name it
 
 // App
 const app = express();
 app.get("/year", async (req, res) => {
 
-  let activeSpan = trace.getSpan(context.active());
-  activeSpan.setAttribute("foo", "bar");
+  let activeSpan = trace.getSpan(context.active()); // get active span
+  activeSpan.setAttribute("foo", "bar"); // set attributes on active span
   const year = await getYear(years);
 
   res.send(`${year}`);
@@ -35,7 +35,7 @@ const years = [2015, 2016, 2017, 2018, 2019, 2020];
 
 async function getYear() {
 
-  const span = tracer.startSpan("getYear");
+  const span = tracer.startSpan("getYear"); // start span
 
   const rnd = Math.floor(Math.random() * years.length);
   const year = years[rnd];

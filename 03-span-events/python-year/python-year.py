@@ -54,6 +54,7 @@ async def do_some_work():
     span = tracer.start_span("some-work")
     span.set_attribute("otel", "rocks")
     await asyncio.sleep(get_random_int(250) / 1000)
+    # add span event and attributes
     span.add_event("my event", attributes={"more": "details"})
     await asyncio.sleep((get_random_int(150) + 100) / 1000)
     span.add_event("another event")

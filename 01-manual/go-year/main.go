@@ -25,6 +25,10 @@ import (
 var years = []int{2015, 2016, 2017, 2018, 2019, 2020}
 
 func main() {
+	// Call initTracer and return a function called cleanup
+	// Defer calling that function
+	// This pattern diverges from official documentation a bit where
+	// Boilerplate code is part of your main function
 	cleanup := initTracer()
 	defer cleanup()
 
@@ -54,32 +58,41 @@ func main() {
 func getYear(ctx context.Context) int {
 	rnd := rand.Intn(len(years))
 	year := years[rnd]
-	tracer := otel.Tracer("")
-	_, span := tracer.Start(ctx, "getYear")
+	tracer := otel.Tracer("")               // Give your tracer a name if you like
+	_, span := tracer.Start(ctx, "getYear") // _ just says we don't care about the context returned here
 	span.SetAttributes(
 		attribute.Int("random-index", rnd),
 		attribute.Int("year", year),
 	)
-	defer span.End()
+	defer span.End() // defer ending
 	time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
 	return year
 }
 
 func initTracer() func() {
 
+	// Top-level Context for incoming requests
 	ctx := context.Background()
 
+	// Create otlp grpc trace exporter to be able to retrieve
+	// the collected spans.
+	// HNY supports OTLP over grpc or HTTP protobuf
 	exporter, err := otlptracegrpc.New(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// Register the exporter with the TracerProvider using
+	// a BatchSpanProcessor
 	provider := sdktrace.NewTracerProvider(
 		sdktrace.WithBatcher(exporter),
 	)
+
 	otel.SetTracerProvider(provider)
 
 	return func() {
 		ctx := context.Background()
+		// Shutdown will flush any remaining spans and shut down the exporter
 		err := provider.Shutdown(ctx)
 		if err != nil {
 			log.Fatal(err)

@@ -53,6 +53,7 @@ func doSomeWork(ctx context.Context) {
 	_, span := tracer.Start(ctx, "some-work")
 	span.SetAttributes(attribute.String("otel", "rocks"))
 	time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
+	// add span event
 	span.AddEvent("my event", trace.WithAttributes(attribute.String("more", "details")))
 	time.Sleep(time.Duration(rand.Intn(150)+100) * time.Millisecond)
 	span.AddEvent("another event")

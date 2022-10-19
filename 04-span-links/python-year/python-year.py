@@ -65,7 +65,9 @@ async def do_some_work():
 
 
 async def generate_linked_trace():
+    # get current span
     source_span = trace.get_current_span()
+    # add link to new span with context from current span
     with tracer.start_as_current_span(
         "python-generated-span",
         context=trace.Context(),

@@ -49,6 +49,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":6001", nil))
 }
 
+// pass in context instead of blank context
 func doSomeWork(ctx context.Context) {
 	tracer := otel.Tracer("")
 	_, span := tracer.Start(ctx, "some-work")

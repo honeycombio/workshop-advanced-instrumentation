@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"time"
 
+	// instrumented with beeline to show propagation of different types of headers
 	beeline "github.com/honeycombio/beeline-go"
 	"github.com/honeycombio/beeline-go/wrappers/hnynethttp"
 )
