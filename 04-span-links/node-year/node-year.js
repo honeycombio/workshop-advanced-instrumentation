@@ -52,6 +52,8 @@ async function doSomeWork() {
 async function generateLinkedTrace() {
 
   let sourceSpan = trace.getSpan(context.active());
+  // add links with the current span context
+  // set root:true to not to use implicit context
   tracer.startActiveSpan("node-generated-span", { root: true, attributes: { "depth": 1 }, links: [{ context: sourceSpan.spanContext() }] }, span => {
     sleepSync(getRandomInt(250));
     addRecursiveSpan(2, 5);

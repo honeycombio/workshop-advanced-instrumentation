@@ -60,6 +60,7 @@ public class YearController {
         try (Scope scope = span.makeCurrent()) {
             span.setAttribute("otel", "rocks");
             Thread.sleep(generator.nextInt(250));
+            // wrap span event attributes in an attributes object
             span.addEvent("my event", Attributes.of(AttributeKey.stringKey("more"), "details"));
             Thread.sleep(generator.nextInt(150) + 100);
             span.addEvent("another event");

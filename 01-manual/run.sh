@@ -23,6 +23,7 @@ java_year() {
 
   gradle bootJar
 
+  # Run your app with the auto-instrumentation agent as a sidecar
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
     java -javaagent:../../lib/opentelemetry-javaagent.jar -jar build/libs/java-year.jar &
   else

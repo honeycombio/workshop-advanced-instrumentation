@@ -74,11 +74,15 @@ public class YearController {
 
     }
 
+    // Method to generate linked traces
     private void generateLinkedTrace() {
+        // create a span usin the current span context
         Span sourceSpan = Span.current();
 
         Tracer tracer = GlobalOpenTelemetry.getTracer("");
 
+        // create the span and set the link to the prior span context
+        // since context is implicit we have to explicitly set no parent
         Span span = tracer.spanBuilder("java-generated-span")
                 .setNoParent()
                 .addLink(sourceSpan.getSpanContext())
@@ -88,6 +92,7 @@ public class YearController {
 
         try {
             Thread.sleep(250);
+            // call self recursively
             addRecursiveSpan(2, 5);
         } catch (InterruptedException e) {
             span.setStatus(StatusCode.ERROR);

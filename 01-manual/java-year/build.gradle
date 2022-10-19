@@ -9,6 +9,7 @@ repositories {
 }
 
 dependencies {
+	// Include opentelemetry dependencies
 	implementation('io.opentelemetry:opentelemetry-api:1.17.0')
 	implementation('io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:1.17.0-alpha')
 

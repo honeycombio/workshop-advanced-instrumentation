@@ -29,6 +29,7 @@ public class YearController {
 
         Span.current().setAttribute("foo", "bar");
 
+        // create a thread 
         Runnable runnable = () -> {
             doSomeWork();
         };
