@@ -3,11 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"go.opentelemetry.io/otel/propagation"
 	"log"
 	"math/rand"
 	"net/http"
 	"time"
+
+	"go.opentelemetry.io/otel/propagation"
 
 	"github.com/gorilla/mux"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
@@ -115,7 +116,8 @@ func initTracer() func() {
 		sdktrace.WithBatcher(exporter),
 	)
 	otel.SetTracerProvider(provider)
-
+	// To propagate trace context over the wire, a propagator must be registered with the OpenTelemetry API
+	// Here we register a unified TextMapPropagator from the TraceContext and baggage propagator globally
 	otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{}))
 
 	return func() {

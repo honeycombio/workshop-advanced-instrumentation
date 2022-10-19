@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"time"
 
+	// To get Beelines and OpenTelemetry instrumentation to interoperate, you will need to use W3C headers
 	beeline "github.com/honeycombio/beeline-go"
 	"github.com/honeycombio/beeline-go/propagation"
 	"github.com/honeycombio/beeline-go/wrappers/config"
@@ -53,6 +54,8 @@ func getYear(ctx context.Context) (int, context.Context) {
 	defer span.Send()
 	time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
 	req, _ := http.NewRequestWithContext(ctx, "GET", "http://localhost:6001/year", nil)
+	// Specify an HTTPPropagationHook for outgoing W3C headers using the WrapRoundTripperWithConfig
+	// HTTPPropagationHook returns a serialized header in W3C trace context format
 	client := &http.Client{
 		Transport: hnynethttp.WrapRoundTripperWithConfig(http.DefaultTransport, config.HTTPOutgoingConfig{HTTPPropagationHook: propagateTraceHook}),
 		Timeout:   time.Second * 5,
@@ -75,6 +78,8 @@ func getYear(ctx context.Context) (int, context.Context) {
 
 func propagateTraceHook(r *http.Request, prop *propagation.PropagationContext) map[string]string {
 	ctx := r.Context()
+	// beeline includes marshal (and unmarshal) functions to generate and parse W3C trace context headers
+	// beelines can automatically detect incoming W3C headers
 	ctx, headers := propagation.MarshalW3CTraceContext(ctx, prop)
 	return headers
 }

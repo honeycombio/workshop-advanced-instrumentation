@@ -1,5 +1,6 @@
 package io.honeycomb.examples.javaotlp;
 
+// import io.opentelemetry.api.baggage.Baggage to allow use of the Baggage class
 import io.opentelemetry.api.baggage.Baggage;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
@@ -72,7 +73,9 @@ public class NameController {
     }
 
     public static void addMultiSpanAttribute(String key, String value) {
+        // add attribute to current span
         Span.current().setAttribute(key, value);
+        // take current baggage, add attribute to baggage, and make the rebuilt baggage current
         Baggage.current().toBuilder().put(key, value).build().makeCurrent();
     }
 
