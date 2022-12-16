@@ -1,7 +1,10 @@
 .gradle
 /build/
 **/build/
-
+otelcol-contrib
+otelcol.tar
+collector/LICENSE
+collector/README.md
 # Ignore Gradle GUI config
 gradle-app.setting
 
