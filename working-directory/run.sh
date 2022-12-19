@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export SERVICE_VERSION="1.0"
 go_year() {
   cd go-year || exit
   go build -o bin/go-year main.go
