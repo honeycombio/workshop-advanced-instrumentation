@@ -59,30 +59,6 @@ java_year() {
   fi
 }
 
-node_year() {
-  cd node-year || exit
-
-  npm install
-
-  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    node -r ./tracing.js node-year.js &
-  else
-    node -r ./tracing.js node-year.js
-  fi
-}
-
-python_year() {
-  cd python-year || exit
-
-  pip install -r requirements.txt
-
-  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    opentelemetry-instrument uvicorn python-year:app --host 0.0.0.0 --port 6001 &
-  else
-    opentelemetry-instrument uvicorn python-year:app --host 0.0.0.0 --port 6001
-  fi
-}
-
 case $1 in
 
 "go-name")
@@ -103,16 +79,6 @@ case $1 in
 "java-year")
   echo "java-year"
   java_year "$@"
-  ;;
-
-"node-year")
-  echo "node-year"
-  node_year "$@"
-  ;;
-
-"python-year")
-  echo "python-year"
-  python_year "$@"
   ;;
 
 *)

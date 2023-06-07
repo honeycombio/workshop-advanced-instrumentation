@@ -29,9 +29,7 @@ public class YearController {
 
         Span.current().setAttribute("foo", "bar");
 
-        Runnable runnable = () -> {
-            doSomeWork();
-        };
+        Runnable runnable = this::doSomeWork;
         // create a thread and wrap it in current context
         // each thread in Java gets its own context so we need to specify 
         // current context

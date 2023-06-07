@@ -29,9 +29,7 @@ public class YearController {
 
         Span.current().setAttribute("foo", "bar");
 
-        Runnable runnable = () -> {
-            doSomeWork();
-        };
+        Runnable runnable = this::doSomeWork;
         new Thread(Context.current().wrap(runnable)).start();
 
         return getYear();
@@ -61,9 +59,7 @@ public class YearController {
             Thread.sleep(generator.nextInt(150) + 100);
             span.addEvent("another event");
 
-            Runnable runnable = () -> {
-                generateLinkedTrace();
-            };
+            Runnable runnable = this::generateLinkedTrace;
             new Thread(Context.current().wrap(runnable)).start();
 
         } catch (Throwable t) {
@@ -83,7 +79,7 @@ public class YearController {
 
         // create the span and set the link to the prior span context
         // since context is implicit we have to explicitly set no parent
-        Span span = tracer.spanBuilder("java-generated-span")
+        Span span = tracer.spanBuilder("generated-span")
                 .setNoParent()
                 .addLink(sourceSpan.getSpanContext())
                 .setAttribute("depth", 1)
