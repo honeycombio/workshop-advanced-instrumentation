@@ -2,7 +2,7 @@
 
 export OTEL_METRICS_EXPORTER="none"
 export OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io:443"
-export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY},x-honeycomb-dataset=${HONEYCOMB_DATASET:-workshop}"
+export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY}"
 export OTEL_SERVICE_NAME="$1"
 
 go_name() {
@@ -26,6 +26,21 @@ go_year() {
     bin/go-year &
   else
     bin/go-year
+  fi
+}
+
+java_name() {
+
+  cd java-name || exit
+
+  gradle bootJar
+
+  export SERVICE_NAME="java-name"
+
+  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
+    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent.jar -jar build/libs/java-name.jar &
+  else
+    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent.jar -jar build/libs/java-name.jar
   fi
 }
 
@@ -76,6 +91,11 @@ case $1 in
 "go-year")
   echo "go-year"
   go_year "$@"
+  ;;
+
+"java-name")
+  echo "java-name"
+  java_name "$@"
   ;;
 
 "java-year")
