@@ -1,8 +1,10 @@
 #!/bin/bash
 
+module_step=$(basename "$PWD")
 export OTEL_METRICS_EXPORTER="none"
 export OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io:443"
 export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY}"
+export OTEL_RESOURCE_ATTRIBUTES="workshop-step=${module_step}"
 export OTEL_SERVICE_NAME="$1"
 
 go_year() {
