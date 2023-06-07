@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"math/rand"
@@ -20,8 +19,8 @@ func main() {
 	r.HandleFunc("/year", func(w http.ResponseWriter, r *http.Request) {
 		rand.Seed(time.Now().UnixNano())
 		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
-		year := getYear(r.Context())
-		fmt.Fprintf(w, "%d", year)
+		year := getYear()
+		_, _ = fmt.Fprintf(w, "%d", year)
 	})
 	http.Handle("/", r)
 
@@ -29,7 +28,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":6001", nil))
 }
 
-func getYear(ctx context.Context) int {
+func getYear() int {
 	rnd := rand.Intn(len(years))
 	year := years[rnd]
 	time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)

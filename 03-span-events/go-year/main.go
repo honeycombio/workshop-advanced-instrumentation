@@ -40,7 +40,7 @@ func main() {
 			attribute.Int("year", year),
 		)
 
-		fmt.Fprintf(w, "%d", year)
+		_, _ = fmt.Fprintf(w, "%d", year)
 	})
 	http.Handle("/", r)
 

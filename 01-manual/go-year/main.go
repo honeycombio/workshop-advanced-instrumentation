@@ -17,7 +17,7 @@ import (
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
+	semconv "go.opentelemetry.io/otel/semconv/v1.20.0"
 	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc/credentials"
 )
@@ -47,7 +47,7 @@ func main() {
 			attribute.Int("year", year),
 		)
 
-		fmt.Fprintf(w, "%d", year)
+		_, _ = fmt.Fprintf(w, "%d", year)
 	})
 	http.Handle("/", r)
 
@@ -102,15 +102,13 @@ func initTracer() func() {
 
 func initTracerTheHardWay() func() {
 	apikey, _ := os.LookupEnv("HONEYCOMB_API_KEY")
-	dataset, _ := os.LookupEnv("HONEYCOMB_DATASET")
 
 	// Set GRPC options to establish an insecure connection to an OpenTelemetry Collector
 	opts := []otlptracegrpc.Option{
 		otlptracegrpc.WithTLSCredentials(credentials.NewClientTLSFromCert(nil, "")),
 		otlptracegrpc.WithEndpoint("api.honeycomb.io:443"),
 		otlptracegrpc.WithHeaders(map[string]string{
-			"x-honeycomb-team":    apikey,
-			"x-honeycomb-dataset": dataset,
+			"x-honeycomb-team": apikey,
 		}),
 	}
 

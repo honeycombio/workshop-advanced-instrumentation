@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"math/rand"
 	"net/http"
@@ -19,12 +19,12 @@ import (
 )
 
 var namesByYear = map[int][]string{
-	2015: []string{"sophia", "jackson", "emma", "aiden", "olivia", "liam", "ava", "lucas", "mia", "noah"},
-	2016: []string{"sophia", "jackson", "emma", "aiden", "olivia", "lucas", "ava", "liam", "mia", "noah"},
-	2017: []string{"sophia", "jackson", "olivia", "liam", "emma", "noah", "ava", "aiden", "isabella", "lucas"},
-	2018: []string{"sophia", "jackson", "olivia", "liam", "emma", "noah", "ava", "aiden", "isabella", "caden"},
-	2019: []string{"sophia", "liam", "olivia", "jackson", "emma", "noah", "ava", "aiden", "aria", "grayson"},
-	2020: []string{"olivia", "noah", "emma", "liam", "ava", "elijah", "isabella", "oliver", "sophia", "lucas"},
+	2015: {"sophia", "jackson", "emma", "aiden", "olivia", "liam", "ava", "lucas", "mia", "noah"},
+	2016: {"sophia", "jackson", "emma", "aiden", "olivia", "lucas", "ava", "liam", "mia", "noah"},
+	2017: {"sophia", "jackson", "olivia", "liam", "emma", "noah", "ava", "aiden", "isabella", "lucas"},
+	2018: {"sophia", "jackson", "olivia", "liam", "emma", "noah", "ava", "aiden", "isabella", "caden"},
+	2019: {"sophia", "liam", "olivia", "jackson", "emma", "noah", "ava", "aiden", "aria", "grayson"},
+	2020: {"olivia", "noah", "emma", "liam", "ava", "elijah", "isabella", "oliver", "sophia", "lucas"},
 }
 
 func main() {
@@ -42,7 +42,7 @@ func main() {
 		year, _ := getYear(r.Context())
 		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
 		names := namesByYear[year]
-		fmt.Fprintf(w, names[rand.Intn(len(names))])
+		_, _ = fmt.Fprintf(w, names[rand.Intn(len(names))])
 	})
 
 	log.Println("Listening on ", ":6002")
@@ -64,8 +64,8 @@ func getYear(ctx context.Context) (int, context.Context) {
 	if err != nil {
 		panic(err)
 	}
-	body, err := ioutil.ReadAll(res.Body)
-	res.Body.Close()
+	body, err := io.ReadAll(res.Body)
+	_ = res.Body.Close()
 	if err != nil {
 		panic(err)
 	}
