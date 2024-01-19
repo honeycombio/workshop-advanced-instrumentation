@@ -72,9 +72,8 @@ git clone https://github.com/honeycombio/workshop-advanced-instrumentation.git w
 cd workshop
 ```
 
-2. Set up your local environment with your Honeycomb API Key and Dataset name. You will need a Honeycomb Team in order to
+2. Set up your local environment with your Honeycomb API Key. You will need a Honeycomb Team in order to
    get your API key. If you don't have a Honeycomb Team you can sign up for a free one [here](https://honeycomb.io/signup).
-   For Dataset name, we recommend `workshop` but you can make this whatever you like.
    The `-w` option will write the environment variables to your shell profile.
 
 ```shell
