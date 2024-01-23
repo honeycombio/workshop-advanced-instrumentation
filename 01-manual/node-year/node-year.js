@@ -50,7 +50,7 @@ async function getYear() {
 }
 
 app.listen(PORT, HOST);
-console.log(`Running node year service on http://${HOST}:${PORT}`);
+console.log(`Running node year service on http://${HOST}:${PORT}/year`);
 
 
 
