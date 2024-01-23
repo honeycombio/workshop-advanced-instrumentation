@@ -10,8 +10,7 @@ import (
 
 	"go.opentelemetry.io/otel/propagation"
 
-	"github.com/gorilla/mux"
-	"go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
@@ -25,13 +24,10 @@ func main() {
 	cleanup := initTracer()
 	defer cleanup()
 
-	r := mux.NewRouter()
-	r.Use(otelmux.Middleware("go-year"))
-
-	r.HandleFunc("/year", func(w http.ResponseWriter, r *http.Request) {
-		rand.Seed(time.Now().UnixNano())
+	handleYear := func(w http.ResponseWriter, r *http.Request) {
 		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
 
+		// do something asynchronously
 		go doSomeWork(r.Context())
 
 		year := getYear(r.Context())
@@ -41,10 +37,14 @@ func main() {
 			attribute.String("foo", "bar"),
 			attribute.Int("year", year),
 		)
-
 		_, _ = fmt.Fprintf(w, "%d", year)
-	})
-	http.Handle("/", r)
+	}
+
+	// Wrap the handler with otelhttp for auto-instrumentation
+	otelHandler := otelhttp.NewHandler(http.HandlerFunc(handleYear), "/year")
+
+	// Use the otelHandler
+	http.Handle("/year", otelHandler)
 
 	log.Println("Listening on ", ":6001")
 	log.Fatal(http.ListenAndServe(":6001", nil))
