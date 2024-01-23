@@ -6,23 +6,17 @@ import (
 	"math/rand"
 	"net/http"
 	"time"
-
-	"github.com/gorilla/mux"
 )
 
 var years = []int{2015, 2016, 2017, 2018, 2019, 2020}
 
 func main() {
 
-	r := mux.NewRouter()
-
-	r.HandleFunc("/year", func(w http.ResponseWriter, r *http.Request) {
-		rand.Seed(time.Now().UnixNano())
+	http.HandleFunc("/year", func(w http.ResponseWriter, r *http.Request) {
 		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
 		year := getYear()
 		_, _ = fmt.Fprintf(w, "%d", year)
 	})
-	http.Handle("/", r)
 
 	log.Println("Listening on ", ":6001")
 	log.Fatal(http.ListenAndServe(":6001", nil))
