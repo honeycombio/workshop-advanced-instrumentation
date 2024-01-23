@@ -1,3 +1,17 @@
+tasks:
+  - init: |
+      docker-compose pull
+  - command: |
+      docker-compose up &
+ports:
+  - port: 9092
+    onOpen: ignore
+  - port: 29092
+    onOpen: ignore
+  - port: 9999
+    onOpen: ignore
+  - port: 2181
+    onOpen: ignore
 image:
   file: .gitpod.Dockerfile
 
