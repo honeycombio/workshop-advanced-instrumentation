@@ -27,5 +27,7 @@ public class BatchProducerWithHeader {
         }
 
         producer.close();
+        System.out.println("Created 100 events...exiting");
+        System.exit(0);
     }
 }
