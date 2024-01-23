@@ -31,21 +31,6 @@ go_year() {
   fi
 }
 
-java_name() {
-
-  cd java-name || exit
-
-  gradle bootJar
-
-  export SERVICE_NAME="java-name"
-
-  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent.jar -jar build/libs/java-name.jar &
-  else
-    java -javaagent:../../lib/honeycomb-opentelemetry-javaagent.jar -jar build/libs/java-name.jar
-  fi
-}
-
 java_year() {
 
   cd java-year || exit
@@ -93,11 +78,6 @@ case $1 in
 "go-year")
   echo "go-year"
   go_year "$@"
-  ;;
-
-"java-name")
-  echo "java-name"
-  java_name "$@"
   ;;
 
 "java-year")
