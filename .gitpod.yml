@@ -1,4 +1,5 @@
 tasks:
+  - before: sdk install java 17.0.4.1-tem < /dev/null
   - command: |
       docker-compose up -d
 ports:
