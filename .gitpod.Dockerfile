@@ -10,7 +10,5 @@ RUN apt-get install -y wget gnupg2 inotify-tools locales && \
 
 USER gitpod
 
-RUN bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh && \
-    sdk install java 21.0.2-zulu && \
-    sdk default java 21.0.2-zulu \
+RUN bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh && sdk install java 21.0.2-zulu && sdk default java 21.0.2-zulu"
 
