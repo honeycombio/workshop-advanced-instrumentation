@@ -8,12 +8,7 @@ RUN apt-get update -y
 RUN apt-get install -y wget gnupg2 inotify-tools locales && \
   locale-gen en_US.UTF-8
 
-# RUN wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && dpkg -i erlang-solutions_2.0_all.deb
+USER gitpod
 
-# RUN apt-get update -y
-# RUN apt-get install -y esl-erlang 
-# RUN apt-get install -y elixir
-# RUN apt-get install -y erlang-diameter
-# RUN apt-get install -y rebar
-# RUN mix local.hex --force
-# RUN mix local.rebar --force
+RUN bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh && sdk install java 21.0.2-zulu && sdk default java 21.0.2-zulu"
+
