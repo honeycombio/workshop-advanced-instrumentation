@@ -1,9 +1,7 @@
 #!/bin/bash
 
 print_usage() {
-  echo "setup-env.sh <api key> [-w]"
-  echo
-  echo "-w option will write settings to user profile"
+  echo "setup-env.sh <api key>"
 }
 
 if [[ -z "$1" ]]; then
@@ -14,11 +12,9 @@ fi
 echo "setting up environment"
 export HONEYCOMB_API_KEY="$1"
 
+echo "persisting to user profile"
 
-if [[ -n "$2" ]] && [[ "$2" == "-w" ]]; then
-  echo "persisting to user profile"
-
-  case $SHELL in
+case $SHELL in
 */zsh)
   cat >> ~/.zshrc <<EOL
 export HONEYCOMB_API_KEY="$1"
@@ -34,5 +30,3 @@ EOL
 export HONEYCOMB_API_KEY="$1"
 EOL
 esac
-
-fi
