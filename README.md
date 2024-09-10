@@ -6,7 +6,8 @@ To get the most value from these examples you are expected to have a basic knowl
 ## Workshop slides
 
 This workshop is meant to be an instructor led workshop, but that shouldn't prevent anyone from doing the workshop themselves.
-Follow along with the [slides](https://docs.google.com/presentation/d/1pYNzZSUFqzF124SkqvXCUZ4JFHs0v_uyQtqyyr9BZYA/edit?usp=sharing).
+Follow along with the [slides](https://docs.google.com/presentation/d/1xZa8r6Lp5PVYh9G1E8h0-BoQcuO6VoUAL9SlRQJYuGQ/edit?usp=sharing).
+
 Make sure to read the speaker notes to get full context on the slide content.
 
 ## Running and Stopping workshop services
