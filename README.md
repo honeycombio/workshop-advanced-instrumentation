@@ -46,7 +46,6 @@ In case there are existing workspace, you can reuse existing one, or click `+` b
 
 2. Set up your local environment with your Honeycomb API Key. You will need a Honeycomb Team in order to
    get your API key. If you don't have a Honeycomb Team you can sign up for a free one [here](https://honeycomb.io/signup).
-   The `-w` option will write the environment variables to your shell profile.
 
 ```shell
 source setup-env.sh YOUR_API_KEY
