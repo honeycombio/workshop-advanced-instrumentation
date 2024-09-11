@@ -46,3 +46,5 @@ gradle-wrapper.jar
 hs_err_pid*
 node_modules
 target/
+
+.DS_Store
