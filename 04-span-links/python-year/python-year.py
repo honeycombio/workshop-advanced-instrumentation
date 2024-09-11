@@ -3,6 +3,7 @@ import os
 import random
 
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
@@ -18,6 +19,11 @@ tracer_provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter()))
 tracer = trace.get_tracer(__name__)
 
 app = FastAPI()
+
+
+@app.get("/", response_class=HTMLResponse)
+def home():
+    return "service: <a href='/year'>/year</a>"
 
 
 @app.get("/year")

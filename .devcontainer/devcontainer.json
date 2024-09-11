@@ -1,0 +1,5 @@
+{
+    "name": "Advanced Instrumentation Workshop",
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "postCreateCommand": "./post-create-script.sh"
+}

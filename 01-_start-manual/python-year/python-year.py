@@ -2,13 +2,14 @@ import asyncio
 import random
 
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 def home():
-    return {"Hello": "World"}
+    return "service: <a href='/year'>/year</a>"
 
 
 @app.get("/year")

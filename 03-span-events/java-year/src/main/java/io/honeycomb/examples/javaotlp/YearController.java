@@ -20,8 +20,13 @@ public class YearController {
     private static final String[] YEARS = new String[]{"2015", "2016", "2017", "2018", "2019", "2020"};
     private static final Random generator = new Random();
 
+    @RequestMapping(value="/", produces="text/html")
+	public String index() {
+		return "service: <a href='/year'>/year</a>";
+	}
+
     @RequestMapping("/year")
-    public String index() {
+    public String year() {
         try {
             Thread.sleep(generator.nextInt(250));
         } catch (InterruptedException e) {

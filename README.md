@@ -32,11 +32,29 @@ stop.sh [service-name]
 
 `service-name` is optional and if not specific all services we be stopped.
 
+## Using GitHub Codespace (recommended)
+
+1. You can conveniently use GitHub's codespace to run the workshop on its devcontainter.
+
+- Visit https://github.com/honeycombio/workshop-advanced-instrumentation
+- Click `Code` button.
+- Click `Create codespace ...` button to create the new workspace.
+
+<center><img src="images/codespace-01.png" width="50%"/></center>
+
+In case there are existing workspace, you can reuse existing one, or click `+` button to create a new workspace.
+
+2. Set up your local environment with your Honeycomb API Key. You will need a Honeycomb Team in order to
+   get your API key. If you don't have a Honeycomb Team you can sign up for a free one [here](https://honeycomb.io/signup).
+
+```shell
+source setup-env.sh YOUR_API_KEY
+```
+
 ## Using GitPod
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/honeycombio/workshop-advanced-instrumentation)
 
-It is recommended to use GitPod to set up the workshop.
 All required prerequisites are set up for you making allowing you to focus on doing the workshop content right away.
 
 ### Setup GitPod environment variables
@@ -78,7 +96,7 @@ cd workshop
    The `-w` option will write the environment variables to your shell profile.
 
 ```shell
-source setup-env.sh YOUR_API_KEY workshop -w
+source setup-env.sh YOUR_API_KEY
 ```
 
 Each example is stored in its own numbered folder, and builds from the prior example. Some examples (1, 2, 5) have an additional

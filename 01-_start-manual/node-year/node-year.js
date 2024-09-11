@@ -8,6 +8,12 @@ const HOST = "0.0.0.0";
 
 // App
 const app = express();
+
+app.get("/", async (req, res) => {
+  res.setHeader('content-type', 'text/html');
+  res.send("service: <a href='/year'>/year</a>");
+});
+
 app.get("/year", async (req, res) => {
   const year = await getYear(years);
   res.send(`${year}`);

@@ -43,6 +43,11 @@ func main() {
 		_, _ = fmt.Fprintf(w, "%d", year)
 	}
 
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html")
+		_, _ = fmt.Fprintf(w, "service: <a href='/year'>/year</a>")
+	})
+
 	// Wrap the handler with otelhttp for auto-instrumentation
 	otelHandler := otelhttp.NewHandler(http.HandlerFunc(handleYear), "/year")
 
