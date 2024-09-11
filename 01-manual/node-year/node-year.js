@@ -10,6 +10,12 @@ const tracer = trace.getTracer("node-year.js"); // get tracer and name it
 
 // App
 const app = express();
+
+app.get("/", async (req, res) => {
+  res.setHeader('content-type', 'text/html');
+  res.send("service: <a href='/year'>/year</a>");
+});
+
 app.get("/year", async (req, res) => {
 
   let activeSpan = trace.getSpan(context.active()); // get active span

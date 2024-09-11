@@ -36,6 +36,12 @@ func main() {
 	defer beeline.Close()
 
 	mux := http.NewServeMux()
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html")
+		_, _ = fmt.Fprintf(w, "service: <a href='/name'>/name</a>")
+	})
+
 	mux.HandleFunc("/name", func(w http.ResponseWriter, r *http.Request) {
 		rand.Seed(time.Now().UnixNano())
 		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
