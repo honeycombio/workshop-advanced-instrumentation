@@ -3,6 +3,8 @@
 Exercises to help you learn advanced instrumentation techniques with OpenTelemetry and Honeycomb.
 To get the most value from these examples you are expected to have a basic knowledge of distributed tracing.
 
+NOTE: if you're looking for the Advanced Instrumentation workshop at Honeycomb's Observability Day events, that is [here](https://github.com/honeycombio/observability-day-workshop).
+
 ## Workshop slides
 
 This workshop is meant to be an instructor led workshop, but that shouldn't prevent anyone from doing the workshop themselves.
