@@ -53,22 +53,6 @@ In case there are existing workspace, you can reuse existing one, or click `+` b
 source setup-env.sh YOUR_API_KEY
 ```
 
-## Using GitPod
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/honeycombio/workshop-advanced-instrumentation)
-
-All required prerequisites are set up for you making allowing you to focus on doing the workshop content right away.
-
-### Setup GitPod environment variables
-
-You will need to create 2 environment variables in GitPod with your Honeycomb API Key and Dataset name.
-You will need a Honeycomb Team in order to get your API key.
-If you don't have a Honeycomb Team you can sign up for a free one [here](https://honeycomb.io/signup).
-
-To create the environment variables you go to your [GitPod user variables](https://gitpod.io/variables) and click the New Variable button.
-
-1. `HONEYCOMB_API_KEY` set this to your Honeycomb API Key with a Scope of _/_
-
 ## Using Local System
 
 You can also run the workshop on your local system.
@@ -76,13 +60,12 @@ You will need to ensure you have the proper prerequisites installed, and do some
 
 ### Prerequisites
 
-The examples in this repository are created using Java and Go.
-
-For Java, a version 11 or greater JDK is required.
-The [Gradle](https://gradle.org/) build tool is used to build all Java examples. You will need it installed on your
-system to run the Java services.
-
-For Go, version 1.14 or greater is required.
+The following toolchains are required to run the workshop:
+- Java 21+
+   - Gradle 8+
+- Go 1.24+
+- Node 22+
+- Python 3.9+
 
 ### Setup local environment
 
