@@ -20,7 +20,7 @@ async def year():
     return {
         "language": "Python",
         "year": result,
-        "generated": datetime.datetime.now().isoformat()
+        "generated": datetime.datetime.now().isoformat(),
     }
 
 

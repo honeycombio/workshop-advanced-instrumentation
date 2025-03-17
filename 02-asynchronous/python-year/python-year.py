@@ -28,8 +28,9 @@ async def year():
     return {
         "language": "Python",
         "year": result,
-        "generated": datetime.datetime.now().isoformat()
+        "generated": datetime.datetime.now().isoformat(),
     }
+
 
 async def do_some_work():
     with tracer.start_as_current_span("some-work") as span:
