@@ -21,7 +21,11 @@ app.get("/year", async (req, res) => {
 
   res.setHeader("content-type", "application/json");
   const year = await getYear(years);
-  res.json({"language": "node", "year": year});
+  res.json({
+    "language": "node",
+    "year": year,
+    "generated": new Date().toISOString()
+  });
 });
 
 async function getYear() {

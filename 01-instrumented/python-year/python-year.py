@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import random
 
 from fastapi import FastAPI
@@ -24,7 +25,11 @@ async def year():
     await do_some_work()
 
     result = await get_year()
-    return {"language": "Python", "year": result}
+    return {
+        "language": "Python",
+        "year": result,
+        "generated": datetime.datetime.now().isoformat(),
+    }
 
 
 async def do_some_work():
