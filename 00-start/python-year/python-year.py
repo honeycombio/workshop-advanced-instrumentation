@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import random
 
 from fastapi import FastAPI
@@ -16,7 +17,11 @@ def home():
 @app.get("/year", response_model=dict)
 async def year():
     result = await get_year()
-    return {"language": "Python", "year": result}
+    return {
+        "language": "Python",
+        "year": result,
+        "generated": datetime.datetime.now().isoformat()
+    }
 
 
 def get_random_int(max):

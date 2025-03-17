@@ -21,8 +21,9 @@ func main() {
 	http.HandleFunc("/year", func(w http.ResponseWriter, r *http.Request) {
 		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
 		response := map[string]interface{}{
-			"language": "Go",
-			"year":     getYear(),
+			"language":  "Go",
+			"year":      getYear(),
+			"generated": time.Now(),
 		}
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(response); err != nil {

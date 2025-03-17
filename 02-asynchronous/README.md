@@ -1,18 +1,20 @@
-# Asynchronous
+# Asynchronous - "Starting Point"
 
-We update our asynchronous calls and pass context to them. Doing so, enables the spans to be created in the parent context.
+This marks the starting point to instrument and understand asynchronous operations in a service. Here services have a new
+asynchronous operation added. That operation is also instrumented, but the spans show up as a separate trace.
 
 ## Java
 
-OpenTelemetry leverages Java thread context, which can be attached to our runnable via the context wrapper with
-`Context.current().wrap(runnable)`.
+A new `Runnable` is started. The runnable calls our function which manually creates a span using the global trace provider. 
+We could also use the `@WithSpan` annotation, but to avoid any ambiguity, the global trace provider was explicitly
+used to create the span. Java maintains thread context, but since this span belongs to a new thread, it gets created as 
+part of a new trace.
 
 ## Go
 
-Since trace context is stored in a Go `context.Context`. We need to pass this context, and leverage it when creating any 
-new span. This may require changes to function and method signatures in order to accept a context object. The best practice
-for this in Go, is to pass context as the first parameter.
+A function is called in a go routine. A new span is created within this function using `context.Background()`. Since the 
+background context is unaware of our trace context, the span belongs to a separate trace.
 
 ## NodeJS
 
-While Node will handle async calbacks fairly well, it will attach the asynchronous spans to the active context. It is good to know how to change the active span in conext for which the async spans may fall under with  [`tracer.startActiveSpan()`](https://open-telemetry.github.io/opentelemetry-js-api/interfaces/tracer.html#startactivespan). You can also manually change the active span with `context.with(trace.setSpan(context.active(), parent),  () => { });`
+An async function is called. A new span is created within this function using async / await methods and will attach to the current context.  Node's single threaded, event loop nature will automatically handle the asynchonous nature of the node event loop.

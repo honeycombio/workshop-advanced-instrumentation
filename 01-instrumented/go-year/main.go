@@ -41,8 +41,9 @@ func main() {
 		)
 
 		response := map[string]interface{}{
-			"language": "Go",
-			"year":     year,
+			"language":  "Go",
+			"year":      year,
+			"generated": time.Now(),
 		}
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(response); err != nil {

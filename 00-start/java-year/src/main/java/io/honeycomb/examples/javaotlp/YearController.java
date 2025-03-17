@@ -3,6 +3,7 @@ package io.honeycomb.examples.javaotlp;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -10,10 +11,10 @@ import java.util.Random;
 @RestController
 public class YearController {
 
-	private static final int[] YEARS = new int[]{2015, 2016, 2017, 2018, 2019, 2020};
-	private static final Random generator = new Random();
+    private static final int[] YEARS = new int[]{2015, 2016, 2017, 2018, 2019, 2020};
+    private static final Random generator = new Random();
 
-	@RequestMapping(value="/", produces="text/html")
+    @RequestMapping(value="/", produces="text/html")
 	public String index() {
 		return "service: <a href='/year'>/year</a>";
 	}
@@ -28,9 +29,10 @@ public class YearController {
 		Map<String, Object> response = new HashMap<>();
 		response.put("language", "Java");
 		response.put("year", getYear());
+		response.put("generated", LocalDateTime.now());
 
-		return response;
-	}
+        return response;
+    }
 
 	public int getYear() {
 		int rnd = generator.nextInt(YEARS.length);

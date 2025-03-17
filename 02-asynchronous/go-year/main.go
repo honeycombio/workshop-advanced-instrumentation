@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"math/rand"
@@ -11,38 +12,48 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
-	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
 )
 
 var years = []int{2015, 2016, 2017, 2018, 2019, 2020}
 
 func main() {
-	cleanup := initTracer()
-	defer cleanup()
-
-	handleYear := func(w http.ResponseWriter, r *http.Request) {
-		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
-
-		// do something asynchronously
-		go doSomeWork(r.Context())
-
-		year := getYear(r.Context())
-
-		span := trace.SpanFromContext(r.Context())
-		span.SetAttributes(
-			attribute.String("foo", "bar"),
-			attribute.Int("year", year),
-		)
-		_, _ = fmt.Fprintf(w, "%d", year)
-	}
+	// Call setupOTelSDK and return a function called cleanup
+	// Defer calling the cleanup function
+	// We are throwing away errors here, but you can handle them if you like
+	cleanup, _ := setupOTelSDK(context.Background())
+	defer func() {
+		_ = cleanup(context.Background())
+	}()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		_, _ = fmt.Fprintf(w, "service: <a href='/year'>/year</a>")
 	})
 
+	handleYear := func(w http.ResponseWriter, r *http.Request) {
+		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
+
+		// do something asynchronously
+		go doSomeWork()
+
+		year := getYear(r.Context())
+
+		span := trace.SpanFromContext(r.Context())
+		span.SetAttributes(
+			attribute.String("foo", "bar"),
+		)
+
+		response := map[string]interface{}{
+			"language":  "Go",
+			"year":      year,
+			"generated": time.Now(),
+		}
+		w.Header().Set("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(response); err != nil {
+			http.Error(w, fmt.Sprintf("Error encoding JSON: %v", err), http.StatusInternalServerError)
+		}
+	}
 	// Wrap the handler with otelhttp for auto-instrumentation
 	otelHandler := otelhttp.NewHandler(http.HandlerFunc(handleYear), "/year")
 
@@ -53,47 +64,24 @@ func main() {
 	log.Fatal(http.ListenAndServe(":6001", nil))
 }
 
-// pass in context instead of blank context
-func doSomeWork(ctx context.Context) {
+func doSomeWork() {
 	tracer := otel.Tracer("")
-	_, span := tracer.Start(ctx, "some-work")
+	_, span := tracer.Start(context.Background(), "some-work")
+	defer span.End()
 	span.SetAttributes(attribute.String("otel", "rocks"))
 	time.Sleep(time.Duration(500) * time.Millisecond)
-	defer span.End()
 }
 
 func getYear(ctx context.Context) int {
 	rnd := rand.Intn(len(years))
 	year := years[rnd]
-	tracer := otel.Tracer("")
-	_, span := tracer.Start(ctx, "getYear")
+	tracer := otel.Tracer("")               // Give your tracer a name if you like
+	_, span := tracer.Start(ctx, "getYear") // _ just says we don't care about the context returned here
+	defer span.End()                        // defer ending
 	span.SetAttributes(
 		attribute.Int("random-index", rnd),
 		attribute.Int("year", year),
 	)
-	defer span.End()
 	time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
 	return year
-}
-
-func initTracer() func() {
-
-	ctx := context.Background()
-
-	exporter, err := otlptracegrpc.New(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	provider := sdktrace.NewTracerProvider(
-		sdktrace.WithBatcher(exporter),
-	)
-	otel.SetTracerProvider(provider)
-
-	return func() {
-		ctx := context.Background()
-		err := provider.Shutdown(ctx)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
 }

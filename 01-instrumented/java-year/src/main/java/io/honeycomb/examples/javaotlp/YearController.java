@@ -9,6 +9,7 @@ import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -39,13 +40,14 @@ public class YearController {
         Map<String, Object> response = new HashMap<>();
         response.put("language", "Java");
         response.put("year", getYear());
+        response.put("generated", LocalDateTime.now());
 
         return response;
     }
 
     @WithSpan("getYear") // create span
     public int getYear() {
-        int rnd = generator.nextInt(YEARS.length);)
+        int rnd = generator.nextInt(YEARS.length);
         Span.current().setAttribute("random-index", rnd); // get the span and add an attribute
 
         int year = YEARS[rnd];
@@ -72,6 +74,5 @@ public class YearController {
         } finally {
             span.end();
         }
-
     }
 }
