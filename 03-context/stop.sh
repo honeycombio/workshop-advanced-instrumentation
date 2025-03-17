@@ -2,7 +2,7 @@
 
 case "$1" in
 
-"go-year" | "go-name" | "java-year" | "java-name" | "node-year" | "python-year")
+"go-year" | "go-name" | "java-year" | "java-name" | "node-year" | "node-name" | "python-year" | "python-name")
   pkill -f "$1"
   ;;
 
@@ -13,7 +13,9 @@ case "$1" in
   pkill -f java-year
   pkill -f java-name
   pkill -f node-year
+  pkill -f node-name
   pkill -f python-year
+  pkill -f python-name
   ;;
 
 *)
