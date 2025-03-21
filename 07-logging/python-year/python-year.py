@@ -27,11 +27,6 @@ console_handler.setFormatter(formatter)
 # Add handler to logger
 logger.addHandler(console_handler)
 
-# print out all the environment variables
-logger.debug(f"HONEYCOMB_API_KEY: {os.environ.get('HONEYCOMB_API_KEY')}")
-logger.debug(f"OTEL_EXPORTER_OTLP_ENDPOINT: {os.environ.get('OTEL_EXPORTER_OTLP_ENDPOINT')}")
-logger.debug(f"OTEL_EXPORTER_OTLP_HEADERS: {os.environ.get('OTEL_EXPORTER_OTLP_HEADERS')}")
-logger.debug(f"OTEL_LOGS_EXPORTER: {os.environ.get('OTEL_LOGS_EXPORTER')}")
 
 @app.get("/", response_class=HTMLResponse)
 def home():

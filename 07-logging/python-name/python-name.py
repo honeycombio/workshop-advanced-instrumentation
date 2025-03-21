@@ -101,6 +101,7 @@ console_handler.setFormatter(formatter)
 # Add handler to logger
 logger.addHandler(console_handler)
 
+
 @app.get("/", response_class=HTMLResponse)
 def home():
     return "service: <a href='/name'>/name</a>"
