@@ -1,0 +1,24 @@
+{
+  "name": "node-year",
+  "version": "1.0.0",
+  "description": "",
+  "main": "node-year.js",
+  "scripts": {
+    "dev": "node --require @opentelemetry/auto-instrumentations-node/register node-year.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.13.0",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.56.1",
+    "@opentelemetry/resources": "^1.30.1",
+    "@opentelemetry/semantic-conventions": "^1.30.0",
+    "@opentelemetry/exporter-trace-otlp-grpc": "^0.57.2",
+    "@opentelemetry/sdk-node": "^0.57.2",
+    "express": "^5.0.1",
+    "process": "^0.11.10",
+    "pino":"^9.6.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

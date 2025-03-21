@@ -1,0 +1,9 @@
+annotated-types>=0.7.0
+anyio>=4.8.0
+fastapi>=0.115.11
+starlette>=0.46.1
+uvicorn>=0.34.0
+
+# OpenTelemetry
+opentelemetry-distro>=0.52b0
+opentelemetry-exporter-otlp>=1.31.0

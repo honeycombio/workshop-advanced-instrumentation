@@ -1,6 +1,11 @@
 .gradle
 /build/
 **/build/
+lib/
+
+# Ignore environment variables
+.env
+.env.development
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -30,6 +35,10 @@ gradle-wrapper.jar
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+
+# python compiled files
+*.pyc
+pyvenv.cfg
 
 # Package Files #
 *.jar

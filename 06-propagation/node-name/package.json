@@ -4,6 +4,7 @@
   "description": "",
   "main": "node-name.js",
   "scripts": {
+    "dev": "node --require @opentelemetry/auto-instrumentations-node/register node-name.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
