@@ -21,7 +21,7 @@ console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.DEBUG)
 
 # Create formatter
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 console_handler.setFormatter(formatter)
 
 # Add handler to logger
@@ -106,4 +106,3 @@ async def add_recursive_span(depth, max_depth):
 
         if depth < max_depth:
             await add_recursive_span(depth + 1, max_depth)
-

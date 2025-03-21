@@ -1,6 +1,7 @@
 .gradle
 /build/
 **/build/
+lib/
 
 # Ignore environment variables
 .env
@@ -37,6 +38,7 @@ gradle-wrapper.jar
 
 # python compiled files
 *.pyc
+pyvenv.cfg
 
 # Package Files #
 *.jar
