@@ -1,7 +1,12 @@
 #!/bin/bash
 
+# get the path of the script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+module_step=$(basename "$PWD")
+
 run_go() {
-  cd "$1" || exit
+  cd "$SCRIPT_DIR/$1" || exit
 
   go build -o "bin/$1" main
 
@@ -14,8 +19,7 @@ run_go() {
 
 run_java() {
 
-  cd "$1" || exit
-
+  cd "$SCRIPT_DIR/$1" || exit
   gradle bootJar
 
   # Run your app with the auto-instrumentation agent as a sidecar
@@ -27,7 +31,7 @@ run_java() {
 }
 
 run_node() {
-  cd "$1" || exit
+  cd "$SCRIPT_DIR/$1" || exit
 
   npm install
 
@@ -39,36 +43,40 @@ run_node() {
 }
 
 run_python() {
-  cd "$1" || exit
+  cd "$SCRIPT_DIR/$1" || exit
 
   pip install -r requirements.txt
-  opentelemetry-bootstrap -a install
+
+  port=6001
+  if [[ "$1" == "python-name" ]]; then
+    port=6002
+  fi
 
   if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
-    uvicorn "$1:app" --host 0.0.0.0 --port 6001 &
+    uvicorn "$1:app" --host 0.0.0.0 --port $port &
   else
-    uvicorn "$1:app" --host 0.0.0.0 --port 6001
+    uvicorn "$1:app" --host 0.0.0.0 --port $port
   fi
 }
 
 case $1 in
 
-"go-year")
+"go-year" | "go-name")
   echo "$1"
   run_go "$@"
   ;;
 
-"java-year")
+"java-year" | "java-name")
   echo "$1"
   run_java "$@"
   ;;
 
-"node-year")
+"node-year" | "node-name")
   echo "$1"
   run_node "$@"
   ;;
 
-"python-year")
+"python-year" | "python-name")
   echo "$1"
   run_python "$@"
   ;;

@@ -6,7 +6,7 @@
     "set-env": "export $(cat .env.development | grep \"^[^#;]\" | xargs) > /dev/null",
     "dev": "npm run set-env && next dev --turbopack --port 6003",
     "build": "next build",
-    "start": "concurrently \"npm run set-env && next dev --turbopack --port 6003\" \"../07-logging/run.sh go-year\" \"../07-logging/run.sh java-name\"",
+    "start": "concurrently \"npm run set-env && next dev --turbopack --port 6003\" \"../07-logging/run.sh go-year\" \"../07-logging/run.sh node-name\"",
     "lint": "next lint"
   },
   "dependencies": {
