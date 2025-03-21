@@ -1,0 +1,33 @@
+{
+  "name": "07-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "set-env": "export $(cat .env.development | grep \"^[^#;]\" | xargs)",
+    "dev": "npm run set-env && next dev --turbopack --port 6003",
+    "build": "next build",
+    "start": "concurrently \"npm run set-env && next dev --turbopack --port 6003\" \"../07-logging/run.sh python-year\" \"../07-logging/run.sh java-name\"",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "15.2.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@honeycombio/opentelemetry-web": "^0.13.0",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/api-logs": "^0.57.2",
+    "@opentelemetry/auto-instrumentations-node": "^0.56.1",
+    "@opentelemetry/auto-instrumentations-web": "^0.45.1",
+    "@opentelemetry/instrumentation": "^0.57.2",
+    "@opentelemetry/sdk-logs": "^0.57.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "concurrently": "^9.1.2",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
