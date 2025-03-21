@@ -11,7 +11,7 @@ interface DataDisplayProps {
 
 async function fetchData(type: string) {
   try {
-    const response = await fetch(`http://${host}:6003/api/${type}`, {
+    const response = await fetch(`/api/${type}`, {
       cache: "no-store",
     });
 
