@@ -4,21 +4,14 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 module_step=$(basename "$PWD")
-OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io:443"
 OTEL_RESOURCE_ATTRIBUTES="workshop-step=${module_step}"
 OTEL_SERVICE_NAME="$1"
-OTEL_METRICS_EXPORTER="none"
-OTEL_LOGS_EXPORTER="none"
 
 run_go() {
   cd "$SCRIPT_DIR/$1" || exit
-  export $(cat "$SCRIPT_DIR/../.env" | grep "^[^#;]" | xargs)
-  export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY}"
-  export OTEL_EXPORTER_OTLP_ENDPOINT=$OTEL_EXPORTER_OTLP_ENDPOINT
-  export OTEL_EXPORTER_OTLP_HEADERS=$OTEL_EXPORTER_OTLP_HEADERS
+  export $(envsubst < "$SCRIPT_DIR/../.env" | grep "^[^#;]" | xargs) > /dev/null
   export OTEL_RESOURCE_ATTRIBUTES=$OTEL_RESOURCE_ATTRIBUTES
   export OTEL_SERVICE_NAME=$OTEL_SERVICE_NAME
-  export OTEL_METRICS_EXPORTER=$OTEL_METRICS_EXPORTER
 
   go build -o "bin/$1" main
 
@@ -32,13 +25,9 @@ run_go() {
 run_java() {
 
   cd "$SCRIPT_DIR/$1" || exit
-  export $(cat "$SCRIPT_DIR/../.env" | grep "^[^#;]" | xargs)
-  export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY}"
-  export OTEL_EXPORTER_OTLP_ENDPOINT=$OTEL_EXPORTER_OTLP_ENDPOINT
-  export OTEL_EXPORTER_OTLP_HEADERS=$OTEL_EXPORTER_OTLP_HEADERS
+  export $(envsubst < "$SCRIPT_DIR/../.env" | grep "^[^#;]" | xargs)
   export OTEL_RESOURCE_ATTRIBUTES=$OTEL_RESOURCE_ATTRIBUTES
   export OTEL_SERVICE_NAME=$OTEL_SERVICE_NAME
-  export OTEL_METRICS_EXPORTER=$OTEL_METRICS_EXPORTER
   gradle bootJar
 
   # Run your app with the auto-instrumentation agent as a sidecar
@@ -51,13 +40,9 @@ run_java() {
 
 run_node() {
   cd "$SCRIPT_DIR/$1" || exit
-  export $(cat "$SCRIPT_DIR/../.env" | grep "^[^#;]" | xargs)
-  export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY}"
-  export OTEL_EXPORTER_OTLP_ENDPOINT=$OTEL_EXPORTER_OTLP_ENDPOINT
-  export OTEL_EXPORTER_OTLP_HEADERS=$OTEL_EXPORTER_OTLP_HEADERS
+  export $(envsubst < "$SCRIPT_DIR/../.env" | grep "^[^#;]" | xargs)
   export OTEL_RESOURCE_ATTRIBUTES=$OTEL_RESOURCE_ATTRIBUTES
   export OTEL_SERVICE_NAME=$OTEL_SERVICE_NAME
-  export OTEL_METRICS_EXPORTER=$OTEL_METRICS_EXPORTER
 
   npm install
 
@@ -70,13 +55,9 @@ run_node() {
 
 run_python() {
   cd "$SCRIPT_DIR/$1" || exit
-  export $(cat "$SCRIPT_DIR/../.env" | grep "^[^#;]" | xargs)
-  export OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=${HONEYCOMB_API_KEY}"
-  export OTEL_EXPORTER_OTLP_ENDPOINT=$OTEL_EXPORTER_OTLP_ENDPOINT
-  export OTEL_EXPORTER_OTLP_HEADERS=$OTEL_EXPORTER_OTLP_HEADERS
+  export $(envsubst < "$SCRIPT_DIR/../.env" | grep "^[^#;]" | xargs)
   export OTEL_RESOURCE_ATTRIBUTES=$OTEL_RESOURCE_ATTRIBUTES
   export OTEL_SERVICE_NAME=$OTEL_SERVICE_NAME
-  export OTEL_METRICS_EXPORTER=$OTEL_METRICS_EXPORTER  # export OTEL_LOGS_EXPORTER=console
 
   pip install -r requirements.txt
   opentelemetry-bootstrap -a install
