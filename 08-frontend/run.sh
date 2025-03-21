@@ -16,8 +16,13 @@ run_frontend() {
 
   # Replace the apiKey in the observability.tsx file
   TSX_FILE="$SCRIPT_DIR/components/observability.tsx"
+  OS_PLATFORM=$(uname)
   if [[ -f "$TSX_FILE" ]]; then
-    sed -i '' "s/apiKey: '[^']*',/apiKey: '$HONEYCOMB_API_KEY',/" "$TSX_FILE"
+    if [[ "$OS_PLATFORM" == "Darwin" ]]; then
+      sed -i '' "s/apiKey: '[^']*',/apiKey: '$HONEYCOMB_API_KEY',/" "$TSX_FILE"
+    else
+      sed -i "s/apiKey: '[^']*',/apiKey: '$HONEYCOMB_API_KEY',/" "$TSX_FILE"
+    fi
   fi
 
   npm install
