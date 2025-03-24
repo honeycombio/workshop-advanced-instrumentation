@@ -19,7 +19,8 @@
     "@opentelemetry/auto-instrumentations-node": "^0.56.1",
     "@opentelemetry/auto-instrumentations-web": "^0.45.1",
     "@opentelemetry/instrumentation": "^0.57.2",
-    "@opentelemetry/sdk-logs": "^0.57.2"
+    "@opentelemetry/sdk-logs": "^0.57.2",
+    "@opentelemetry/exporter-logs-otlp-http": "^0.57.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
