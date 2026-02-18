@@ -3,7 +3,7 @@ import { NodeSDK } from '@opentelemetry/sdk-node';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 // import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
-import { Resource } from '@opentelemetry/resources';
+import { resourceFromAttributes } from '@opentelemetry/resources';
 import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 import { logs, SeverityNumber } from '@opentelemetry/api-logs';
@@ -12,7 +12,7 @@ import {
   SimpleLogRecordProcessor
 } from '@opentelemetry/sdk-logs';
 
-const resource = new Resource({
+const resource = resourceFromAttributes({
   [ATTR_SERVICE_NAME]: 'frontend',
 });
 
@@ -33,9 +33,9 @@ const sdk: NodeSDK = new NodeSDK({
 
 const logExporter = new OTLPLogExporter();
 const loggerProvider = new LoggerProvider({
-  resource: resource
+  resource: resource,
+  processors: [new SimpleLogRecordProcessor(logExporter)],
 });
-loggerProvider.addLogRecordProcessor(new SimpleLogRecordProcessor(logExporter));
 logs.setGlobalLoggerProvider(loggerProvider);
 
 const customLogger = {

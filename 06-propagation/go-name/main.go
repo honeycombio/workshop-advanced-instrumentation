@@ -74,8 +74,12 @@ func main() {
 }
 
 func getYear(ctx context.Context) (int, error) {
-
-	resp, err := otelhttp.Get(ctx, "http://localhost:6001/year")
+	client := &http.Client{Transport: otelhttp.NewTransport(http.DefaultTransport)}
+	req, err := http.NewRequestWithContext(ctx, "GET", "http://localhost:6001/year", nil)
+	if err != nil {
+		return 0, err
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return 0, err
 	}
