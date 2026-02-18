@@ -1,7 +1,6 @@
 .gradle
 /build/
 **/build/
-lib/
 
 # Ignore environment variables
 .env
