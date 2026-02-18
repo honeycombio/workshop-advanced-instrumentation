@@ -24,7 +24,7 @@ run.sh <service-name> [-b]
 ```
 
 Where the optional `-b` argument will start the service in the background.
-Valid service names will depend on the example and are limited to: `go-name`, `go-year`, `java-name`, `java-year`, and `node-year`.
+Valid service names will depend on the example and are limited to: `go-name`, `go-year`, `java-name`, `java-year`, `node-name`, `node-year`, `python-name`, `python-year`, `dotnet-name`, and `dotnet-year`.
 
 The syntax for the stop script is:
 
@@ -66,6 +66,19 @@ The following toolchains are required to run the workshop:
 - Go 1.24+
 - Node 22+
 - Python 3.9+
+- .NET 8+
+
+### Java agent (for Java services)
+
+Java examples (e.g. `run.sh java-year`, `run.sh java-name`) and the `16-message-queue` example run with the [OpenTelemetry Java agent](https://opentelemetry.io/docs/zero-code/java/agent/). The agent JAR is not included in the repo. Either:
+
+1. **Download via script (recommended):** From the repo root, run:
+   ```shell
+   ./scripts/download-java-agent.sh
+   ```
+   This places `opentelemetry-javaagent.jar` in the `lib/` directory (which is gitignored).
+
+2. **Manual download:** Download the latest [opentelemetry-javaagent](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases) JAR from the GitHub releases, and save it as `lib/opentelemetry-javaagent.jar`.
 
 ### Setup local environment
 

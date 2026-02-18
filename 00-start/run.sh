@@ -44,6 +44,9 @@ run_node() {
 
 run_python() {
   cd "$SCRIPT_DIR/$1" || exit
+  if [[ -d "$SCRIPT_DIR/../.venv" ]]; then
+    export PATH="$SCRIPT_DIR/../.venv/bin:$PATH"
+  fi
 
   pip install -r requirements.txt
 
@@ -56,6 +59,18 @@ run_python() {
     uvicorn "$1:app" --host 0.0.0.0 --port $port &
   else
     uvicorn "$1:app" --host 0.0.0.0 --port $port
+  fi
+}
+
+run_dotnet() {
+  cd "$SCRIPT_DIR/$1" || exit
+
+  dotnet build -o bin -nologo -v q
+
+  if [[ -n "$2" ]] && [[ "$2" == "-b" ]]; then
+    dotnet bin/"$1".dll &
+  else
+    dotnet bin/"$1".dll
   fi
 }
 
@@ -79,6 +94,11 @@ case $1 in
 "python-year" | "python-name")
   echo "$1"
   run_python "$@"
+  ;;
+
+"dotnet-year" | "dotnet-name")
+  echo "$1"
+  run_dotnet "$@"
   ;;
 
 *)
