@@ -51,10 +51,11 @@ void DoSomeWork(ActivityContext parentContext)
 void GenerateLinkedTrace(ActivityContext srcSpanContext)
 {
     var link = new ActivityLink(srcSpanContext);
-    var tags = new KeyValuePair<string, object?>[] { new("depth", 1) };
-    // Create a new trace with this span as root: clear current activity so the new span has no parent
+    // New trace with this span as root: clear current so the new span has no parent.
+    // Simplified: StartActivity(name, kind, parentContext, tags, links) — name and link only for workshop clarity.
     Activity.Current = null;
-    using var span = tracer.StartActivity(ActivityKind.Internal, default, tags, new[] { link }, default, "generated-span-root");
+    using var span = tracer.StartActivity("generated-span-root", ActivityKind.Internal, default, null, new[] { link });
+    span?.SetTag("depth", 1);
     Thread.Sleep(random.Next(250));
     AddRecursiveSpan(2, 5);
 }

@@ -56,3 +56,7 @@ node_modules
 target/
 
 .DS_Store
+
+# Dotnet build artifacts
+**/bin/
+**/obj/
